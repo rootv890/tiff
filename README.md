@@ -4,7 +4,12 @@ use server-side funcs when using in API, use client-side funcs when using in cli
 
 April 12th, 2025
 
-1. Build Custom Radix Library - TiffUI
+1. Start Build Custom Radix Library - TiffUI
+
+April 13th, 2025
+
+1. Better Auth Authentication
+2. User management
 
 Tiff UI progress
 [x] Flex

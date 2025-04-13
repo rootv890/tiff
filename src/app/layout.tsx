@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { QueryProvider } from "./modules/QueryProvider"
 import localFont from "next/font/local"
+import { Theme, ThemePanel } from "@radix-ui/themes"
 
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
@@ -49,7 +50,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={` ${geistMono.variable} ${ggSans.variable} antialiased`}>
-				<QueryProvider>{children}</QueryProvider>
+				<Theme appearance="dark">
+					<QueryProvider>{children}</QueryProvider>
+					<ThemePanel defaultOpen={false} />
+				</Theme>
 			</body>
 		</html>
 	)

@@ -1,7 +1,7 @@
 "use client";
 import { authClient } from "@/app/api/auth/authClient";
-import { SignInWithEmailType, SignUpWithEmailType } from "@/types";
-import { APIError } from "better-auth";
+import { SignInWithEmailType, SignUpWithEmailSchemaType } from "@/types";
+import { APIError } from "better-auth/api";
 
 export const signOut = async () => {
   await authClient.signOut({ query: { redirect: "/login" } });
@@ -36,12 +36,13 @@ export const signUpWithEmail = async ({
   name,
   email,
   password,
-}: SignUpWithEmailType) => {
+}: SignUpWithEmailSchemaType) => {
   try {
     return await authClient.signUp.email({
       name,
       email,
       password,
+
       fetchOptions: {
         onError: (error) => {
           console.log(error);

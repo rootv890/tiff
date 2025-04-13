@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@/auth/auth"; // path to your Better Auth server instance
-import { SignInWithEmailType, SignUpWithEmailType } from "@/types";
+import { SignInWithEmailType, SignUpWithEmailSchemaType } from "@/types";
 import { headers } from "next/headers";
 import { APIError } from "better-auth/api";
 
@@ -33,18 +33,11 @@ export const signInWithEmail = async ({
 };
 
 // sign up
-export const signUpWithEmail = async ({
-  name,
-  email,
-  password,
-}: SignUpWithEmailType) => {
+export const signUpWithEmail = async (data: SignUpWithEmailSchemaType) => {
+  console.log("signing up with email", data);
   try {
     return await auth.api.signUpEmail({
-      body: {
-        name,
-        email,
-        password,
-      },
+      body: data,
       headers: await headers(),
     });
   } catch (error) {
@@ -67,4 +60,12 @@ export const signOut = async () => {
     }
     throw error;
   }
+};
+
+//  get Session
+
+export const getSession = async () => {
+  return await auth.api.getSession({
+    headers: await headers(),
+  });
 };

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@radix-ui/themes/styles.css";
 
 @theme inline {
 	--font-sans: var(--font-ggsans);
@@ -51,7 +52,7 @@
 	--secondary: #121213;
 	--secondary-foreground: #dbdcdf;
 	--muted: #121213;
-	--muted-foreground: #b9b9ba;
+	--muted-foreground: #929292;
 	--accent: #27282c;
 	--accent-foreground: #ffffff;
 	--input-border: #2e2f34;

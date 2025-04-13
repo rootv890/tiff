@@ -12,3 +12,9 @@ export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
 		</QueryClientProvider>
 	)
 }
+
+/**
+ * Additional Things
+ * 1. Check for user's login session
+ * 2. If user is not logged in, redirect to login page
+ */

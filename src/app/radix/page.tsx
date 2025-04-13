@@ -7,8 +7,8 @@ import {
 } from "@/components/tiffui/Popover"
 
 import { RiSendPlaneFill } from "react-icons/ri"
-import { Label } from "./Label"
-import { Input } from "./Input"
+import { Label } from "../../components/tiffui/Label"
+import { Input } from "../../components/tiffui/Input"
 const RadixPage = () => {
 	return (
 		<div className="flex p-4 gap-4 flex-col w-fit">

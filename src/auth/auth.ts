@@ -10,5 +10,20 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: true,
+  },
+  // extra fields
+  user: {
+    modelName: "user",
+    additionalFields: {
+      username: {
+        type: "string",
+        required: true,
+      },
+      acceptTos: {
+        type: "boolean",
+        required: true,
+      },
+    },
   },
 });

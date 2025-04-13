@@ -1,13 +1,18 @@
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
+/**
+ * Better Auth
+ */
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),
   image: text("image"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
+  acceptTos: boolean("accept_tos").notNull(),
 });
 
 export const session = pgTable("session", {
@@ -49,3 +54,7 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 });
+
+/**
+ * Tiff Tables
+ */
