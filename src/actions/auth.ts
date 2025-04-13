@@ -22,7 +22,9 @@ export const signInWithEmail = async ({
         email,
         password,
       },
+
       headers: await headers(),
+      // asResponse: true,
     });
   } catch (error) {
     if (error instanceof APIError) {

@@ -1,12 +1,12 @@
 "use client"
-
 import Button from "@/components/tiffui/Button"
 import { useUser } from "@/hooks/useUser"
 import { Flex } from "@radix-ui/themes"
 import Link from "next/link"
 
 export default function LandingPage() {
-	const { user, isPending, isError, error } = useUser()
+	const { user, isPending, session, isError, error } = useUser()
+	console.log("SESSION", session)
 
 	console.log(user)
 	const renderContent = () => {
