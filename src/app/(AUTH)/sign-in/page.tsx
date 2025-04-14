@@ -1,6 +1,6 @@
-import SignInForm from "@/modules/auth/SignInForm"
+import SignInForm from '@/modules/auth/SignInForm'
 
 const SignInPage = () => {
-	return <SignInForm />
+    return <SignInForm />
 }
 export default SignInPage

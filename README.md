@@ -1,3 +1,12 @@
+```
+    ████████╗██╗███████╗███████╗
+    ╚══██╔══╝██║██╔════╝██╔════╝
+       ██║   ██║█████╗  █████╗
+       ██║   ██║██╔══╝  ██╔══╝
+       ██║   ██║██║     ██║
+       ╚═╝   ╚═╝╚═╝     ╚═╝
+```
+
 Any Queries ? Use React Query with Modular Apporach
 
 use server-side funcs when using in API, use client-side funcs when using in client-side
@@ -10,6 +19,7 @@ April 13th, 2025
 
 1. Better Auth Authentication
 2. User management
+3. Table - Servers, Channels, Categories, Roles, Members
 
 Tiff UI progress
 [x] Flex
@@ -29,3 +39,12 @@ Tiff UI progress
 [] Scroll Area
 [] Navigation
 [] Seprator
+
+## Server Creation Process
+
+1. create a server
+2. Add the creator as the ownerId
+3. Create a system pack - system category,roles, channels
+4. Generate the invite code
+
+Stopped at adding username for placeholder but gettin undefined because queryDelay

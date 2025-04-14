@@ -1,9 +1,9 @@
 type ErrorMessageProps = {
-	message: string | undefined
+    message: string | undefined
 }
 
 const ErrorMessage = ({ message }: ErrorMessageProps) => {
-	return <p className="text-red-500 text-sm">{message}</p>
+    return <p className="text-red-500 text-sm">{message}</p>
 }
 
 export default ErrorMessage
