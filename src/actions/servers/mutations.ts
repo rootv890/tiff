@@ -3,10 +3,13 @@ import db from "@/db/db";
 import {
   categories as CATEGORIES,
   channels as CHANNELS,
+  serverMembers as SERVER_MEMBERS,
   servers as SERVERS,
   systems as SYSTEMS,
+  user as USER,
 } from "@/db/schema";
 import { generateId } from "@/lib/utils";
+import { and, eq } from "drizzle-orm";
 
 // -------
 // servers
@@ -30,6 +33,23 @@ export const createServerAction = async (
 ): Promise<CreateServerReturnType> => {
   try {
     const serverId = generateId("server");
+
+    // Single Owner cannot have same Servername at once
+
+    const duplicateServerName = await db.query.servers.findFirst({
+      where: and(
+        eq(SERVERS.name, data.name),
+        eq(SERVERS.ownerId, data.ownerId),
+      ),
+    });
+
+    if (duplicateServerName) {
+      return {
+        success: false,
+        error: "Server name already exists",
+      };
+    }
+
     const [server] = await db.insert(SERVERS).values({
       name: data.name,
       ownerId: data.ownerId,
@@ -41,6 +61,26 @@ export const createServerAction = async (
       createdAt: new Date(),
       updatedAt: new Date(),
       id: serverId,
+    }).returning();
+
+    const owner = await db.query.user.findFirst({
+      where: eq(USER.id, data.ownerId),
+    });
+
+    if (!owner) {
+      return {
+        success: false,
+        error: "Owner not found",
+      };
+    }
+
+    // add owner to serverMembers
+    await db.insert(SERVER_MEMBERS).values({
+      id: generateId("member"),
+      userId: data.ownerId,
+      serverId: serverId,
+      nickname: owner.name,
+      joinedAt: new Date(),
     }).returning();
 
     // create system

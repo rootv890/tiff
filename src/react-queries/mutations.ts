@@ -2,7 +2,10 @@
  * All mutation options at one place
  */
 "use client";
-import { createServerAction, CreateServerType } from "@/actions/mutations";
+import {
+  createServerAction,
+  CreateServerType,
+} from "@/actions/servers/mutations";
 import { QUERY_KEYS } from "@/queryKeys";
 import { MutationOptions, useMutation } from "@tanstack/react-query";
 

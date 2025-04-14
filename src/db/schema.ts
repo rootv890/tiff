@@ -161,6 +161,21 @@ export const serverMembers = pgTable("server_members", {
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
 });
 
+export const serverMembersRelations = relations(
+    serverMembers,
+    ({ one }) => ({
+        server: one(servers, {
+            relationName: "joinedServer",
+            fields: [serverMembers.serverId],
+            references: [servers.id],
+        }),
+        user: one(user, {
+            fields: [serverMembers.userId],
+            references: [user.id],
+        }),
+    }),
+);
+
 export const memberRoles = pgTable("member_roles", {
     id: text("id").primaryKey(),
     memberId: text("member_id")

@@ -5,16 +5,19 @@ import { Input } from "@/components/tiffui/Input";
 import { Label } from "@/components/tiffui/Label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { useUser } from "@/hooks/useUser";
-import { cn, imageReader } from "@/lib/utils";
+import { cn, imageReader, randomServerAvatar } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Flex } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import UploadServerIconSVG from "@/components/UploadServerIcon";
-import { useCreateServerMutation } from "@/react-queries/mutations";
-import { createServerAction, CreateServerType } from "@/actions/mutations";
+
+import {
+  createServerAction,
+  CreateServerType,
+} from "@/actions/servers/mutations";
 import { QUERY_KEYS } from "@/queryKeys";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useImageUploadMutation } from "@/cloudinary/uploadImage";
@@ -62,6 +65,7 @@ const CreateServerForm = () => {
   });
 
   // 🚀 Mutation
+  const queryClient = useQueryClient();
   const createServerMutation = useMutation({
     mutationKey: [QUERY_KEYS.CREATE_SERVER],
     mutationFn: async (data: CreateServerType) => {
@@ -71,8 +75,9 @@ const CreateServerForm = () => {
       }
       return result;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Server created successfully");
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SERVERS] });
       setOpen(null);
       reset();
     },
@@ -84,35 +89,37 @@ const CreateServerForm = () => {
 
   // 📨 Submit handler
   const onSubmit = async (data: CreateServerSchemaType) => {
-    if (isPending || !user || !file) return;
+    if (isPending || !user) return;
 
     try {
-      const uploadPromise = new Promise<{
-        cloudinaryUrl: string;
-        publicId: string;
-      }>((resolve, reject) => {
-        uploadImage(file, {
-          onSuccess: (data) => resolve(data),
-          onError: (error) => reject(error),
+      let uploadResult;
+      if (file) {
+        uploadResult = await new Promise<{
+          cloudinaryUrl: string;
+          publicId: string;
+        }>((resolve, reject) => {
+          uploadImage(file, {
+            onSuccess: (data) => resolve(data),
+            onError: (error) => reject(error),
+          });
         });
-      });
-
-      const uploadResult = await uploadPromise;
-
-      const avatarUrl = uploadResult?.cloudinaryUrl;
-      if (!avatarUrl) {
-        toast.error("Upload failed");
-        return;
+      } else {
+        const serverAvatar = randomServerAvatar();
+        uploadResult = {
+          cloudinaryUrl: serverAvatar.url,
+          publicId: serverAvatar.publicId,
+        };
       }
-      createServerMutation.mutate({
+
+      await createServerMutation.mutateAsync({
         name: data.name,
         ownerId: user.id,
-        avatar: avatarUrl,
+        avatar: uploadResult.cloudinaryUrl || "",
         description: "",
       });
     } catch (error) {
-      console.error("Image upload error", error);
-      toast.error("Failed to upload image");
+      console.error(error);
+      toast.error("Failed to create server");
     }
   };
 
@@ -207,7 +214,10 @@ const CreateServerForm = () => {
         </Button>
 
         <Button type="submit" size={"lg"} disabled={isSubmitting || isPending}>
-          {isSubmitting ? (
+          {isSubmitting ||
+          isPending ||
+          isImageUploadPending ||
+          createServerMutation.isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Creating...

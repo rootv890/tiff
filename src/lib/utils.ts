@@ -6,11 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import { nanoid } from "nanoid";
+import { serverAvatarsLink } from "./data";
 
 const prefixMap = {
     server: "SR_",
     category: "CG_",
     channel: "CH_",
+    member: "MB_",
     user: "US_",
     message: "MS_",
     emoji: "EM_",
@@ -48,6 +50,17 @@ export const imageReader = async (file: File) => {
     });
 };
 
-export const randomServerAvatar = () => {
-    return;
+export const randomServerAvatar = (): {
+    id: string;
+    url: string;
+    publicId: string;
+} => {
+    const serverAvatar =
+        serverAvatarsLink[Math.floor(Math.random() * serverAvatarsLink.length)];
+
+    return {
+        id: serverAvatar.id,
+        url: serverAvatar.url,
+        publicId: serverAvatar.publicId,
+    };
 };
