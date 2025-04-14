@@ -52,7 +52,7 @@ const CreateServerForm = () => {
     );
   const { setOpen } = useModal();
 
-  // 🎯 Form
+  // Form
   const {
     register,
     handleSubmit,
@@ -64,7 +64,7 @@ const CreateServerForm = () => {
     resolver: zodResolver(createServerSchema),
   });
 
-  // 🚀 Mutation
+  //  Mutation
   const queryClient = useQueryClient();
   const createServerMutation = useMutation({
     mutationKey: [QUERY_KEYS.CREATE_SERVER],

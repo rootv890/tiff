@@ -23,6 +23,8 @@
   --color-violet: var(--color-violet);
   --color-violet-foreground: var(--color-violet-foreground);
   --color-input: var(--input);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
   --color-input-border: var(--input-border);
   --color-active: var(--active);
@@ -65,7 +67,8 @@
   --sidebar: #000000;
   --sidebar-foreground: #ffffff;
   --popover-border: #3c3e44;
-
+  --card: #212225;
+  --card-foreground: #ffffff;
   /* inputs */
 
   --input: #111214;

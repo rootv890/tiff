@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ModalOpenType } from "@/types";
 import { CreateServerModal } from "./mnf/CreateServerModal";
+import Link from "next/link";
 
 const TiffLauncher = () => {
   const { setOpen } = useModal();
@@ -39,9 +40,11 @@ const TiffLauncher = () => {
               <RiCompass3Fill className="size-6 text-success" />
               Explore Servers
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-3 py-3 flex items-center">
-              <TiThSmallOutline className="size-6 text-success" />
-              List All Servers
+            <DropdownMenuItem asChild className="px-3 py-3 flex items-center">
+              <Link href="/servers/all">
+                <TiThSmallOutline className="size-6 text-success" />
+                List All Servers
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
