@@ -1,18 +1,25 @@
-import { createEnv } from '@t3-oss/env-core'
-import { z } from 'zod'
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
 
 export const env = createEnv({
     server: {
         DATABASE_URL: z.string().url(),
+        CLOUDINARY_CLOUD_NAME: z.string(),
+        CLOUDINARY_API_KEY: z.string(),
+        CLOUDINARY_API_SECRET: z.string(),
+        CLOUDINARY_FOLDER_NAME: z.string(),
     },
 
     /**
      * The prefix that client-side variables must have. This is enforced both at
      * a type-level and at runtime.
      */
-    clientPrefix: 'PUBLIC_',
+    clientPrefix: "NEXT_PUBLIC_",
 
-    client: {},
+    client: {
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
+        NEXT_PUBLIC_BASE_URL: z.string(),
+    },
 
     /**
      * What object holds the environment variables at runtime. This is usually
@@ -34,4 +41,4 @@ export const env = createEnv({
      * explicitly specify this option as true.
      */
     emptyStringAsUndefined: true,
-})
+});

@@ -14,6 +14,7 @@ const prefixMap = {
     user: "US_",
     message: "MS_",
     emoji: "EM_",
+    system: "SYS_",
 };
 
 type IDtype = keyof typeof prefixMap;
@@ -25,4 +26,28 @@ export const generateId = (
     if (!prefix) throw new Error("Invalid ID type");
 
     return `${prefix}${nanoid(length)}`;
+};
+
+export const generateSuffixId = (): string => {
+    return nanoid(6);
+};
+
+export const getBaseUrl = () => {
+    if (typeof window !== "undefined") return window.location.origin;
+    return process.env.NEXT_PUBLIC_URL
+        ? `https://${process.env.NEXT_PUBLIC_URL}`
+        : "http://localhost:3000";
+};
+
+export const imageReader = async (file: File) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => resolve(e.target?.result);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
+export const randomServerAvatar = () => {
+    return;
 };

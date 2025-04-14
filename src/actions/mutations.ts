@@ -1,6 +1,11 @@
 "use server";
 import db from "@/db/db";
-import { servers as SERVERS } from "@/db/schema";
+import {
+  categories as CATEGORIES,
+  channels as CHANNELS,
+  servers as SERVERS,
+  systems as SYSTEMS,
+} from "@/db/schema";
 import { generateId } from "@/lib/utils";
 
 // -------
@@ -25,7 +30,7 @@ export const createServerAction = async (
 ): Promise<CreateServerReturnType> => {
   try {
     const serverId = generateId("server");
-    await db.insert(SERVERS).values({
+    const [server] = await db.insert(SERVERS).values({
       name: data.name,
       ownerId: data.ownerId,
       boostCount: 0,
@@ -36,7 +41,35 @@ export const createServerAction = async (
       createdAt: new Date(),
       updatedAt: new Date(),
       id: serverId,
-    });
+    }).returning();
+
+    // create system
+    const [systemCategory] = await db.insert(CATEGORIES).values({
+      id: generateId("category"),
+      serverId: serverId,
+      name: "System",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).returning();
+
+    const [systemChannel] = await db.insert(CHANNELS).values({
+      id: generateId("channel"),
+      serverId: serverId,
+      name: "general",
+      type: "TEXT",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).returning();
+
+    const [system] = await db.insert(SYSTEMS).values({
+      id: generateId("system"),
+      serverId: serverId,
+      systemChannelId: systemChannel.id,
+      systemCategoryId: systemCategory.id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).returning();
+    // create system, category, channels
 
     return { success: true, serverId };
   } catch (error) {

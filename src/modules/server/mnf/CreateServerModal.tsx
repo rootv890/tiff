@@ -19,6 +19,7 @@ export function CreateServerModal() {
   return (
     <Dialog
       open={open === ModalOpenType.CREATE_SERVER}
+      // open={true}
       onOpenChange={() => setOpen(null)}
     >
       <DialogContent className="bg-background p-8 rounded-lg w-108 ">

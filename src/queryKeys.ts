@@ -5,4 +5,5 @@ export enum QUERY_KEYS {
     CREATE_SERVER = "create-server",
     UPDATE_SERVER = "update-server",
     SERVERS = "servers",
+    IMAGE_UPLOAD = "image-upload",
 }
