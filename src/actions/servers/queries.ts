@@ -10,9 +10,13 @@ export const fetchAllServers = async (userId: string) => {
     with: {
       server: true, // this now works because of the one() fix
     },
+    orderBy: (serverMembers, { desc }) => [desc(serverMembers.joinedAt)],
   });
   return {
     success: true,
-    servers: servers.map((server) => server.server),
+    servers: servers.map((server) => ({
+      ...server.server,
+      joinedAt: server.joinedAt,
+    })),
   };
 };

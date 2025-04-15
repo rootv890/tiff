@@ -64,3 +64,12 @@ export const randomServerAvatar = (): {
         publicId: serverAvatar.publicId,
     };
 };
+
+export const isRecentlyJoined = (joinedAt: string) => {
+    const currentDate = new Date();
+    const joinedDate = new Date(joinedAt);
+    const diff =
+        currentDate.getTime() - joinedDate.getTime() < 2 * 24 * 60 * 60 * 1000;
+    // if the diff is less than 2 days, return true
+    return diff;
+};

@@ -123,3 +123,14 @@ body {
   );
   border-image-slice: 1;
 }
+
+
+@layer components{
+  .menu-item{
+    @apply p-(--item-padding) flex items-center justify-start
+  }
+}
+
+/* div {
+  color: #3d48b9
+} */

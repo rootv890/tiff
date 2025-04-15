@@ -13,9 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  // Tiff is a discord like/clone
-  title: "Tiff",
+  title: "Tiff: Way cooler than discord",
   description: "A new way to argue with your friends.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 const ggSans = localFont({

@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
     boolean,
     integer,
+    jsonb,
     pgEnum,
     pgTable,
     text,
@@ -16,6 +17,13 @@ import {
 /**
  * Better Auth
  */
+export const userStatusEnum = pgEnum("status", [
+    "online",
+    "idle",
+    "dnd",
+    "offline",
+]);
+
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
     name: text("name").notNull(),
@@ -23,6 +31,20 @@ export const user = pgTable("user", {
     email: text("email").notNull().unique(),
     emailVerified: boolean("email_verified").notNull(),
     image: text("image"),
+    pronouns: text("pronouns").default(""),
+    bio: text("bio").default(""),
+    // banner can be color or url
+    banner: jsonb("banner").default({
+        type: "solid",
+        color: "#5865f2",
+        url: "",
+        gradient: {
+            from: "#5865f2",
+            to: "#3d48b9",
+            angle: 135,
+        },
+    }),
+    status: userStatusEnum("status").default("online"),
     createdAt: timestamp("created_at").notNull(),
     updatedAt: timestamp("updated_at").notNull(),
     acceptTos: boolean("accept_tos").notNull(),
@@ -87,7 +109,16 @@ export const servers = pgTable("servers", {
         }),
     isPublic: boolean("is_public").default(true),
     inviteCode: text("invite_code"),
-    banner: text("banner"),
+    banner: jsonb("banner").default({
+        type: "solid",
+        color: "#5865f2",
+        url: "",
+        gradient: {
+            from: "#5865f2",
+            to: "#3d48b9",
+            angle: 135,
+        },
+    }),
     boostCount: integer("boost_count").default(0),
     avatar: text("avatar"),
     createdAt: timestamp("created_at").notNull(),

@@ -16,6 +16,9 @@ import { ModalOpenType } from "@/types";
 import { CreateServerModal } from "./mnf/CreateServerModal";
 import Link from "next/link";
 
+
+
+
 const TiffLauncher = () => {
   const { setOpen } = useModal();
   return (
@@ -24,11 +27,11 @@ const TiffLauncher = () => {
         <DropdownMenuTrigger className="max-w-[60px] mx-auto aspect-square w-full rounded-xl group  hover:bg-muted">
           <TbCategory2 className="size-8 mx-auto group-hover:text-foreground text-muted-foreground transition-colors  duration-500" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" align="start" className="p-2">
-          {" "}
-          <DropdownMenuGroup className="grid grid-cols-2  gap-x-4 gap-y-2">
+        <DropdownMenuContent side="right" align="start"
+        className="p-(--item-padding)  [--item-padding:--spacing(2)] rounded-xl ">
+          <DropdownMenuGroup className="flex flex-col  gap-x-4 gap-y-2">
             <DropdownMenuItem
-              className="p-3 col-span-2 flex items-center justify-center"
+              className="menu-item"
               onClick={() => {
                 setOpen(ModalOpenType.CREATE_SERVER);
               }}
@@ -36,11 +39,11 @@ const TiffLauncher = () => {
               <FaPlus className="size-5 text-success" />
               Create Server
             </DropdownMenuItem>
-            <DropdownMenuItem className="px-3 py-3 flex items-center">
+            <DropdownMenuItem className="menu-item">
               <RiCompass3Fill className="size-6 text-success" />
               Explore Servers
             </DropdownMenuItem>
-            <DropdownMenuItem asChild className="px-3 py-3 flex items-center">
+            <DropdownMenuItem asChild className="menu-item">
               <Link href="/servers/all">
                 <TiThSmallOutline className="size-6 text-success" />
                 List All Servers
