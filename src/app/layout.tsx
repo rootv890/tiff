@@ -17,10 +17,10 @@ export const metadata: Metadata = {
   description: "A new way to argue with your friends.",
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-32x32.png",
-    apple: "/apple-touch-icon.png",
+    // shortcut: "/favicon-32x32.png",
+    // apple: "/apple-touch-icon.png",
   },
-  manifest: "/site.webmanifest",
+  // manifest: "/site.webmanifest",
 };
 
 const ggSans = localFont({

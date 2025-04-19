@@ -11,7 +11,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                         alt="Logo"
                         width={160}
                         height={100}
-                        className="object-contain"
+                        className="object-contain h-auto w-auto"
                     />
                 </div>
             </div>

@@ -9,6 +9,7 @@ import {
   user as USER,
 } from "@/db/schema";
 import { generateId } from "@/lib/utils";
+import { BannerType } from "@/types";
 import { and, eq } from "drizzle-orm";
 
 // -------
@@ -20,6 +21,7 @@ export type CreateServerType = {
   ownerId: string;
   avatar?: string;
   description?: string;
+  banner?: BannerType;
 };
 
 export type CreateServerReturnType = {
@@ -34,7 +36,23 @@ export const createServerAction = async (
   try {
     const serverId = generateId("server");
 
+    if (!data.avatar) {
+      data.avatar = "";
+    }
+
     // Single Owner cannot have same Servername at once
+    if (!data.banner) {
+      data.banner = {
+        url: "",
+        type: "solid",
+        color: "#5865f2",
+        gradient: {
+          to: "#3d48b9",
+          from: "#5865f2",
+          angle: 135,
+        },
+      };
+    }
 
     const duplicateServerName = await db.query.servers.findFirst({
       where: and(
@@ -54,8 +72,8 @@ export const createServerAction = async (
       name: data.name,
       ownerId: data.ownerId,
       boostCount: 0,
-      banner: "",
-      avatar: data.avatar || "",
+      banner: data.banner,
+      avatar: data.avatar,
       isPublic: true,
       inviteCode: "",
       createdAt: new Date(),

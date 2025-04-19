@@ -17,7 +17,11 @@ export type SignInWithEmailType = {
 
 export const SignUpWithEmailSchema = createInsertSchema(user).extend({
     password: z.string().min(8),
-    acceptTos: z.literal(false),
+    acceptTos: z.literal(true, {
+        errorMap: () => ({
+            message: "You must accept the Terms of Service",
+        }),
+    }),
 });
 export type SignUpWithEmailSchemaType = z.infer<typeof SignUpWithEmailSchema>;
 

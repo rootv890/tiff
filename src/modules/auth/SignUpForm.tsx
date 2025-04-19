@@ -4,15 +4,18 @@ import { signUpWithEmail } from "@/actions/auth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Button from "@/components/tiffui/Button";
 import Checkbox from "@/components/tiffui/Checkbox";
+import Debugger from "@/components/tiffui/Debugger";
 import { Input } from "@/components/tiffui/Input";
 import { Label } from "@/components/tiffui/Label";
 import { cn } from "@/lib/utils";
 import { QUERY_KEYS } from "@/queryKeys";
-import { SignUpWithEmailSchemaType } from "@/types";
+import { SignUpWithEmailSchema, SignUpWithEmailSchemaType } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Flex } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
 const FLEX_GAP = "3";
 const SignUpForm = () => {
@@ -20,9 +23,18 @@ const SignUpForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-
+    watch,
     control,
-  } = useForm<SignUpWithEmailSchemaType>();
+  } = useForm<SignUpWithEmailSchemaType>({
+    defaultValues:{
+      status: "online",
+      pronouns:"",
+      bio:"",
+      banner: "",
+      image: "",
+
+    },
+  });
 
   /**
    * Mutations
@@ -43,9 +55,9 @@ const SignUpForm = () => {
   /**
    * Submission
    */
-  function onSubmit(values: SignUpWithEmailSchemaType) {
+   function onSubmit(values: SignUpWithEmailSchemaType) {
     console.log("submitting", values);
-    mutation.mutateAsync(values);
+    mutation.mutate(values);
   }
 
   return (
@@ -142,8 +154,8 @@ const SignUpForm = () => {
             rules={{ required: "Please accept the Terms" }}
             render={({ field }) => (
               <Checkbox
-                checked={field.value}
-                onCheckedChange={field.onChange}
+                checked={!!field.value}
+                onCheckedChange={val => field.onChange(!!val)}
                 id="acceptTos"
               />
             )}
@@ -165,10 +177,11 @@ const SignUpForm = () => {
           type="submit"
           disabled={isSubmitting || mutation.isPending}
         >
-          {isSubmitting ? "Signing up..." : "Sign Up"}
+          {isSubmitting || mutation.isPending ? "Signing up..." : "Sign Up"}
         </Button>
         {mutation.isError && <ErrorMessage message={mutation.error.message} />}
       </Flex>
+      <Debugger data={watch()} />
     </form>
   );
 };

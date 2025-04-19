@@ -72,7 +72,7 @@ export default function LandingPage() {
         <p className="text-[#b5bac1] text-base mb-8 max-w-md">
           Connect with your friends and communities in real-time. Tiff makes it
           easy to chat, share, and debate with the people who matter most.
-        </p>
+      </p>
         <Flex gap="2" className="flex gap-2">
           <Button asChild variant="outline">
             <Link href="/sign-in">Login to Tiff</Link>
