@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { z } from "zod";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 type ServerButtonProps = {
   serverData: z.infer<typeof selectServerSchema>;
@@ -21,13 +22,14 @@ const ServerButton = ({
   type = "server",
 }: ServerButtonProps) => {
   return (
+    <Link href={`/servers/${serverData.id}`} >
     <motion.button
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.08 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
-        "w-full max-w-[48px] h-fit flex flex-col items-center justify-center group mx-auto aspect-square rounded-xl hover:rounded-full transition-all isolate duration-300 ease-in-out relative p-0",
+        "w-fit h-fit flex flex-col items-center justify-center group aspect-square rounded-xl hover:rounded-full transition-all isolate duration-300 ease-in-out relative p-0",
         className,
         active && "rounded-full",
       )}
@@ -63,6 +65,7 @@ const ServerButton = ({
         </motion.div>
       </Tooltip>
     </motion.button>
+    </Link>
   );
 };
 

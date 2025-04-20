@@ -1,7 +1,7 @@
 'use client';
 
 import { useAllServers } from "@/react-queries/queries";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { Flex } from "@radix-ui/themes";
 import ServerButton from "./ServerButton";
 import TiffLauncher from "./TiffLauncher";
@@ -31,12 +31,12 @@ const ServersSidebar = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   const servers = data?.servers || [];
-
+//  [--card-padding:--spacing(1)]
   return (
-    <div className="bg-sidebar py-4 w-full max-w-[5.2rem] px-2">
+    <div className="bg-white py-4 w-full max-w-14 px-2">
       <div className="h-full overflow-y-auto flex flex-col justify-start items-center  " >
         <motion.div
-          className="w-full max-w-[5.6rem] flex flex-col gap-4  "
+          className="w-full  flex flex-col gap-4  "
           variants={staggerContainer}
           initial="hidden"
           animate="show"

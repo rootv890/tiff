@@ -38,8 +38,28 @@ export const signInWithEmail = async ({
 export const signUpWithEmail = async (data: SignUpWithEmailSchemaType) => {
     console.log("signing up with email", data);
     try {
+        // Extract only the fields we need and ensure they match the expected types
+        const requiredData = {
+            // Required fields from the first intersection type
+            name: data.name,
+            email: data.email,
+            password: data.password,
+
+            // Required fields from the second intersection type
+            username: data.username,
+            pronouns: data.pronouns ?? "", // Ensure it's a string
+            bio: data.bio ?? "", // Ensure it's a string
+            banner: typeof data.banner === "string"
+                ? data.banner
+                : JSON.stringify(
+                    data.banner ?? { type: "solid", color: "#5865f2" },
+                ),
+            status: data.status ?? "online",
+            acceptTos: data.acceptTos === true,
+        };
+
         return await auth.api.signUpEmail({
-            body: data,
+            body: requiredData,
             headers: await headers(),
         });
     } catch (error) {

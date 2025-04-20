@@ -282,6 +282,49 @@ export const channels = pgTable("channels", {
     updatedAt: timestamp("updated_at").notNull(),
 });
 
+export const notificationLevel = pgEnum("notification_level", [
+    "ALL",
+    "MENTION",
+    "NONE",
+]);
+
+export const userConfiguration = pgTable("user_configuration", {
+    id: text("id").primaryKey(),
+    configVersion: integer("config_version").notNull().default(1),
+    userId: text("user_id").notNull().references(() => user.id, {
+        onDelete: "cascade",
+    }),
+    serverId: text("server_id").notNull().references(() => servers.id, {
+        onDelete: "cascade",
+    }),
+    mute: boolean("mute").default(false),
+    hide: boolean("hide").default(false),
+    fontSize: integer("font_size").default(14),
+    theme: text("theme").default("light"),
+    pinnedChannels: jsonb("pinned_channels").default([]),
+    // TODO  "starredMessages"
+    // starredMessages: jsonb("starred_messages").default([]),
+    notificationLevel: notificationLevel("notification_level").default("ALL"),
+    lastSeen: timestamp("last_seen").notNull().defaultNow(),
+    betaFeatures: boolean("beta_features").default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const userConfigurationRelations = relations(
+    userConfiguration,
+    ({ one }) => ({
+        user: one(user, {
+            fields: [userConfiguration.userId],
+            references: [user.id],
+        }),
+        server: one(servers, {
+            fields: [userConfiguration.serverId],
+            references: [servers.id],
+        }),
+    }),
+);
+
 // positions usees
 /* 🛠 Why Use It?
 Drag & drop support ✅

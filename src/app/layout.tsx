@@ -6,6 +6,7 @@ import "./globals.css";
 import { ModalProvider } from "./providers/ModalProvider";
 import { QueryProvider } from "./providers/QueryProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -57,12 +58,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` ${geistMono.variable} ${ggSans.variable} antialiased`}>
-        <Toaster richColors />
+        <Toaster richColors closeButton position="top-center"  toastOptions={{
+          style: {
+            borderRadius: "12px",
+            border: "1px solid #5865f2",
+            padding: "10px",
+          }
+        }}/>
         <Theme appearance="dark">
+
           <QueryProvider>
             <ModalProvider>{children}</ModalProvider>
           </QueryProvider>
           <ThemePanel defaultOpen={false} />
+
         </Theme>
       </body>
     </html>

@@ -47,6 +47,12 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-input-border: var(--input-border);
+  --sidebar-width: 240px;
+  --sidebar-width-icon: 40px;
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 :root {
@@ -66,6 +72,10 @@
   --primary-foreground: #000000;
   --sidebar: #000000;
   --sidebar-foreground: #ffffff;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 0 0% 11.4%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
   --popover-border: #3c3e44;
   --card: #212225;
   --card-foreground: #ffffff;
