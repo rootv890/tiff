@@ -97,6 +97,7 @@ export const createServerAction = async (
       id: generateId("member"),
       userId: data.ownerId,
       serverId: serverId,
+      role: "owner",
       nickname: owner.name,
       joinedAt: new Date(),
     }).returning();
@@ -113,6 +114,7 @@ export const createServerAction = async (
     const [systemChannel] = await db.insert(CHANNELS).values({
       id: generateId("channel"),
       serverId: serverId,
+      categoryId: systemCategory.id,
       name: "general",
       type: "TEXT",
       createdAt: new Date(),

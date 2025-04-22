@@ -130,7 +130,6 @@ export const serverRelations = relations(servers, ({ many, one }) => ({
         fields: [servers.id],
         references: [systems.serverId],
     }),
-    channels: many(channels),
     categories: many(categories),
     roles: many(serverRoles),
     members: many(serverMembers),
@@ -176,6 +175,9 @@ export const serverRoles = pgTable("server_roles", {
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// ROLE ENUM
+export const roleEnum = pgEnum("role", ["owner", "admin", "member"]);
+
 export const serverMembers = pgTable("server_members", {
     id: text("id").primaryKey(),
     userId: text("user_id")
@@ -188,6 +190,7 @@ export const serverMembers = pgTable("server_members", {
         .references(() => servers.id, {
             onDelete: "cascade",
         }),
+    role: roleEnum("role").notNull(),
     nickname: text("nickname"),
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
 });
@@ -233,25 +236,9 @@ export const categories = pgTable("categories", {
         .references(() => servers.id, {
             onDelete: "cascade",
         }),
+
     createdAt: timestamp("created_at").notNull(),
     updatedAt: timestamp("updated_at").notNull(),
-});
-
-export const categoryChannels = pgTable("category_channels", {
-    id: text("id").primaryKey(),
-    categoryId: text("category_id")
-        .notNull()
-        .references(() => categories.id, {
-            onDelete: "cascade",
-        }),
-    channelId: text("channel_id")
-        .notNull()
-        .references(() => channels.id, {
-            onDelete: "cascade",
-        }),
-    position: integer("position").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const categoryRelations = relations(categories, ({ one, many }) => ({
@@ -259,7 +246,7 @@ export const categoryRelations = relations(categories, ({ one, many }) => ({
         fields: [categories.serverId],
         references: [servers.id],
     }),
-    channels: many(categoryChannels),
+    channels: many(channels),
 }));
 
 export const channelEnums = pgEnum("channel_type", [
@@ -277,10 +264,26 @@ export const channels = pgTable("channels", {
         .references(() => servers.id, {
             onDelete: "cascade",
         }),
+    categoryId: text("category_id")
+        .notNull()
+        .references(() => categories.id, {
+            onDelete: "cascade",
+        }),
     type: channelEnums("type").notNull(),
     createdAt: timestamp("created_at").notNull(),
     updatedAt: timestamp("updated_at").notNull(),
 });
+
+export const channelRelations = relations(channels, ({ one }) => ({
+    server: one(servers, {
+        fields: [channels.serverId],
+        references: [servers.id],
+    }),
+    category: one(categories, {
+        fields: [channels.categoryId],
+        references: [categories.id],
+    }),
+}));
 
 export const notificationLevel = pgEnum("notification_level", [
     "ALL",
@@ -350,11 +353,6 @@ export const selectCategorySchema = createSelectSchema(categories);
 export const createChannelSchema = createInsertSchema(channels);
 export const updateChannelSchema = createUpdateSchema(channels);
 export const selectChannelSchema = createSelectSchema(channels);
-
-// category_channels
-export const createCategoryChannelSchema = createInsertSchema(categoryChannels);
-export const updateCategoryChannelSchema = createUpdateSchema(categoryChannels);
-export const selectCategoryChannelSchema = createSelectSchema(categoryChannels);
 
 // server_roles
 export const createServerRoleSchema = createInsertSchema(serverRoles);

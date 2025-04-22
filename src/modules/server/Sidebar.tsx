@@ -1,13 +1,18 @@
 'use client';
 
 import { useAllServers } from "@/react-queries/queries";
-
-import { Flex } from "@radix-ui/themes";
 import ServerButton from "./ServerButton";
 import TiffLauncher from "./TiffLauncher";
 import { ServersSidebarSkeleton } from "./LoadingServers";
-import { Separator } from "@/components/ui/separator";
 import { motion } from "motion/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarSeparator,
+  SidebarFooter
+} from "@/components/ui/sidebar";
 
 const staggerContainer = {
   hidden: {},
@@ -31,56 +36,77 @@ const ServersSidebar = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   const servers = data?.servers || [];
-//  [--card-padding:--spacing(1)]
+
   return (
-    <div className="bg-white py-4 w-full max-w-14 px-2">
-      <div className="h-full overflow-y-auto flex flex-col justify-start items-center  " >
+    <Sidebar
+      className="bg-sidebar border-r border-border w-full max-w-14"
+      collapsible="none"
+      side="left"
+    >
+      <SidebarHeader className="px-2 py-4 flex flex-col items-center">
         <motion.div
-          className="w-full  flex flex-col gap-4  "
-          variants={staggerContainer}
+          variants={itemVariants}
           initial="hidden"
           animate="show"
         >
-          <motion.div variants={itemVariants}>
-            <ServerButton
-              type="dm"
-              key="dm"
-              className="bg-secondary max-w-[56px]"
-              serverData={{
-                id: "1",
-                name: "Direct Messages",
-                avatar: "/logo_main.png",
-                banner: null,
-                description: null,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                ownerId: "1",
-                isPublic: false,
-                inviteCode: null,
-                boostCount: null,
-              }}
-            />
-          </motion.div>
+          <ServerButton
+            type="dm"
+            key="dm"
+            className="bg-secondary"
+            serverData={{
+              id: "1",
+              name: "Direct Messages",
+              avatar: "/logo_main.png",
+              banner: null,
+              description: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              ownerId: "1",
+              isPublic: false,
+              inviteCode: null,
+              boostCount: null,
+            }}
+          />
+        </motion.div>
 
-          <motion.div variants={itemVariants}>
-            <TiffLauncher />
-          </motion.div>
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          animate="show"
+          className="mt-4"
+        >
+          <TiffLauncher />
+        </motion.div>
+      </SidebarHeader>
 
-          <motion.div variants={itemVariants}>
-            <Separator />
-          </motion.div>
+      <SidebarSeparator className="px-2" />
 
-          <Flex className="w-full " direction="column" gapY="3">
+      <SidebarContent className="px-2 py-4 w-full">
+        <ScrollArea className="h-full w-full">
+          <motion.div
+            className="w-full flex flex-col items-center justify-center gap-3"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
             {servers.map((server) => (
-              <motion.div key={server.id} variants={itemVariants}>
+              <motion.div
+                className="w-full flex items-center justify-center"
+                key={server.id}
+                variants={itemVariants}
+              >
                 {/* @ts-ignore */}
                 <ServerButton serverData={server} />
               </motion.div>
             ))}
-          </Flex>
-        </motion.div>
-      </div>
-    </div>
+          </motion.div>
+        </ScrollArea>
+      </SidebarContent>
+
+      <SidebarFooter className="px-2 py-2">
+        {/* Footer content if needed */}
+      </SidebarFooter>
+    </Sidebar>
   );
 };
 

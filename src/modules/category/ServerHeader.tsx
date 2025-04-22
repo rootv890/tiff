@@ -2,23 +2,14 @@
 
 import { ServerType } from "@/types"
 import { Skeleton } from "@radix-ui/themes"
-import { ChevronDown, FolderPlus, MessageSquarePlus, LogOut, Trash2, Rocket, Bell, EyeOff, XIcon, Settings } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ServerBanner } from "./ServerBanner"
 import { useState } from "react"
-import { toast } from "sonner"
-import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu"
-import { Badge } from "@/components/ui/badge"
+import { ServerDropdown } from "./ServerDropdown"
+import { CreateCategoryModal } from "./mnf/CreateCategoryModal"
+
+
 
 interface ServerHeaderProps {
-  serverData: ServerType
+  serverData:ServerType  | undefined
 }
 
 
@@ -28,12 +19,22 @@ const ServerHeader = (
 ) => {
   if (!serverData) return <ServerHeaderSkeleton/>
 
+  // Use banner styling directly on parent element
+  const bannerStyle = serverData?.banner?.type === "solid"
+    ? { backgroundColor: serverData.banner.color }
+    : serverData?.banner?.url
+    ? { backgroundImage: `url(${serverData.banner.url})`, backgroundSize: 'cover' }
+    : serverData?.banner?.gradient
+    ? { backgroundImage: `linear-gradient(${serverData.banner.gradient.angle || 135}deg, ${serverData.banner.gradient.from || '#3d48b9'}, ${serverData.banner.gradient.to || '#5865f2'})` }
+    : { backgroundImage: 'linear-gradient(135deg, #3d48b9, #5865f2)' };
+
   const [open, setOpen] = useState(false)
 
+  if (!serverData) return <ServerHeaderSkeleton/>
+
   return (
-    <div className="w-[calc(100%+1rem)] relative -m-2">
-    {/* Banner background - absolute positioned */}
-    <ServerBanner banner={serverData.banner} />
+    <div className="w-[calc(100%+1rem)] h-32 relative -m-2 mask-b-from-0 mask-b-to-100" style={bannerStyle}>
+
     <div className="hover:bg-card/20 hover:backdrop-blur-xl h-14 flex px-4 items-center justify-between relative z-10"
       onClick={() => setOpen(!open)}
     >
@@ -44,10 +45,11 @@ const ServerHeader = (
         </h3>
       </div>
       <div>
-        <ServerDropdown open={open} setOpen={setOpen}/>
+        <ServerDropdown dropDownOpen={open} setDropDownOpen={setOpen}/>
       </div>
-
     </div>
+    {/* All modals */}
+    <CreateCategoryModal/>
     </div>
   )
 }
@@ -55,92 +57,6 @@ export default ServerHeader
 
 
 
-export function ServerDropdown(
-  {open, setOpen}: {open?: boolean, setOpen?: (open: boolean) => void}
-) {
-  return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <button>
-          {
-            !open ? <ChevronDown/> : <XIcon/>
-          }
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent  className="w-58  rounded-xl backdrop-blur-2xl" sticky="partial" side="bottom" align="end">
-        <DropdownMenuGroup>
-          {/* Create new category option */}
-          <DropdownMenuItem>
-            <FolderPlus className="mr-2 h-4 w-4" />
-            <span>New Category</span>
-          </DropdownMenuItem>
-
-          {/* Create new channel option */}
-          <DropdownMenuItem>
-            <MessageSquarePlus className="mr-2 h-4 w-4" />
-            <span>New Channel</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-          {/* Server Settings */}
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Server Settings</span>
-          </DropdownMenuItem>
-
-          {/* Server boost option */}
-          <DropdownMenuItem>
-            <Rocket className="mr-2 h-4 w-4 text-pink-500" />
-            <span>Server Boost</span>
-            <Badge  className="text-muted-foreground text-xs" variant="secondary">
-                for v2.0
-              </Badge>
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-
-          {/* Mute server option */}
-          <DropdownMenuItem>
-            <Bell className="mr-2 h-4 w-4" />
-            <span>Mute Server</span>
-            <Badge  className="text-muted-foreground text-xs" variant="secondary">
-                for v2.0
-              </Badge>
-          </DropdownMenuItem>
-
-          {/* Hide server option */}
-          <DropdownMenuItem onClick={()=>{
-            toast.warning('This feature is not available yet',{
-              description:"Expect in version banana i.e, 2.0"
-            })
-          }}>
-            <EyeOff className="mr-2 h-4 w-4" />
-            <span>Hide Server</span>
-
-              <Badge  className="text-muted-foreground text-xs" variant="secondary">
-                for v2.0
-              </Badge>
-
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-
-          {/* Leave server option */}
-          <DropdownMenuItem variant="destructive">
-            <LogOut className="mr-2 h-4 w-4 text-amber-500" />
-            <span>Leave Server</span>
-          </DropdownMenuItem>
-
-          {/* Delete server option */}
-          <DropdownMenuItem variant="destructive">
-            <Trash2 className="mr-2 h-4 w-4" />
-            <span>Delete Server</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
 
 
 /**
@@ -159,11 +75,9 @@ export function SkeletonBanner() {
 
 export function ServerHeaderSkeleton() {
   return (
-    <div className="w-[calc(100%+1rem)] relative -m-2">
-      {/* Banner background - absolute positioned with skeleton effect */}
+    <div className="w-[calc(100%+1rem)] h-32 relative -m-2">
       <SkeletonBanner />
       <div className="bg-card/50 backdrop-blur-sm h-14 flex px-4 items-center justify-between relative z-10">
-        {/* title of the server */}
         <div>
           <h3 className="font-semibold text-lg">
             <Skeleton className="w-32 h-4"/>
@@ -173,6 +87,7 @@ export function ServerHeaderSkeleton() {
           <ServerDropdown/>
         </div>
       </div>
+
     </div>
   )
 }

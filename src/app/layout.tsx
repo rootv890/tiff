@@ -66,12 +66,12 @@ export default function RootLayout({
           }
         }}/>
         <Theme appearance="dark">
-
+          <SidebarProvider>
           <QueryProvider>
             <ModalProvider>{children}</ModalProvider>
           </QueryProvider>
           <ThemePanel defaultOpen={false} />
-
+          </SidebarProvider>
         </Theme>
       </body>
     </html>

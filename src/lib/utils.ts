@@ -17,6 +17,7 @@ const prefixMap = {
     message: "MS_",
     emoji: "EM_",
     system: "SYS_",
+    categoryChannel: "CGCH_",
 };
 
 type IDtype = keyof typeof prefixMap;

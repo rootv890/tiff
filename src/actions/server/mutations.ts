@@ -1,0 +1,53 @@
+"use server";
+// TODOS:
+/**
+ * 1. Create Category under Server
+ * 2. Create Channel with TYPES under Server of a Category
+ * 3. Delete Channel
+ * 4. Edit Channel
+ * 5. Edit Category
+ * 6. Delete Category
+ */
+
+import { generateId } from "@/lib/utils";
+import db from "@/db/db";
+import { categories as CATEGORIES, channels as CHANNELS } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { isAdmin, isModerator } from "../base";
+
+// Server Mutations
+/**
+ * Creates a new category under a server.
+ *
+ * @param serverId The ID of the server to create the category under.
+ * @param name The name of the category.
+ * @returns An object with a `success` property and a `categoryId` property if successful. If the operation fails, the `success` property is `false` and an `error` property is provided.
+ */
+export async function createCategoryAction(
+  userId: string,
+  serverId: string,
+  name: string,
+) {
+  try {
+    if (!serverId) {
+      return { success: false, error: "Server ID is required" };
+    }
+    // He has to be admin or moderator
+    if (!isModerator(userId, serverId) || !isAdmin(userId, serverId)) {
+      return { success: false, error: "User is not an admin or moderator" };
+    }
+
+    const categoryId = generateId("category");
+    await db.insert(CATEGORIES).values({
+      id: categoryId,
+      name,
+      serverId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    return { success: true, categoryId };
+  } catch (error) {
+    console.error("Failed to create category:", error);
+    return { success: false, error: "Failed to create category" };
+  }
+}

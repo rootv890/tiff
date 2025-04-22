@@ -1,10 +1,12 @@
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { selectServerSchema, user } from "./db/schema";
+import { selectCategorySchema, selectServerSchema, user } from "./db/schema";
 
 export enum ModalOpenType {
     CREATE_SERVER = "CREATE_SERVER",
     EDIT_SERVER = "EDIT_SERVER",
+    CREATE_CATEGORY = "CREATE_CATEGORY",
+    EDIT_CATEGORY = "EDIT_CATEGORY",
 }
 
 // sign in
@@ -42,4 +44,28 @@ export interface BannerType {
 export type ServerType = Omit<z.infer<typeof selectServerSchema>, "banner"> & {
     joinedAt: Date | string;
     banner: BannerType;
+    categories: CategoryType[];
 };
+export type ServerData = {
+    success: boolean;
+    server: ServerType;
+};
+
+export type CategoryType = z.infer<typeof selectCategorySchema> & {
+    channels: CategoryChannelType[];
+};
+
+// This extends the category channel with information from the related channel
+export type CategoryChannelType =
+    & z.infer<typeof selectCategoryChannelSchema>
+    & {
+        name?: string;
+        type?: "TEXT" | "VOICE" | "ANNOUNCEMENT";
+    };
+
+export type RoleType = "owner" | "admin" | "member";
+
+export const createCategorySchema = z.object({
+    name: z.string().min(3).max(20),
+});
+export type CREATE_CATEGORY_SCHEMA = z.infer<typeof createCategorySchema>;

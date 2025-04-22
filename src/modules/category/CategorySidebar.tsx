@@ -7,54 +7,91 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import ServerHeader from "./ServerHeader"
-import { useQuery } from "@tanstack/react-query"
-import { useParams } from "next/navigation"
+import ServerHeader, { ServerHeaderSkeleton } from "./ServerHeader"
+import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { QUERY_KEYS } from "@/queryKeys"
-const CategorySidebar = (
-  { serverId }: { serverId: string }
-) => {
+import { fetchServerById } from "@/actions/servers/queries"
+import { ServerData, ServerType } from "@/types"
+import { JSX } from "react"
+import CategoryTab from "./CategoryTab"
+
+
+// query factory
+const useServerById = (
+  serverId: string,
+): UseQueryOptions<ServerData, Error> => {
+  return {
+    queryKey: [QUERY_KEYS.CATEGORIES,QUERY_KEYS.SERVER , serverId],
+    queryFn: async () => await fetchServerById(serverId)
+  }
+}
+
+
+/**
+ * Renders a sidebar for a server category with the category name and a "New topic"
+ * button.
+ *
+ * @param {Object} props
+ * @prop {string} serverId - The ID of the server to render the sidebar for.
+ */
+const CategorySidebar = ({
+  serverId,
+}: {
+  serverId: string
+}): JSX.Element => {
   // fetch current serverData
-  const params =  useParams()
-  const serverData = useQuery({
-    queryKey: [QUERY_KEYS.SERVER, params.sId],
-     // queryFn: () =>
-  })
+
+  const {
+    data,
+    isLoading,
+    isError,
+    status
+  } = useQuery<ServerData, Error>(useServerById(serverId))
+  if (isLoading) return <CategorySidebarSkeleton/>
+
+  if (isError) return <pre>{JSON.stringify(status, null, 2)}</pre>
+
+  console.log(
+    "serverData", data?.server
+  )
+
   return (
     <Sidebar variant="sidebar" collapsible="offcanvas" className="translate-x-14
     border-border !p-0" >
       <SidebarHeader >
-        <ServerHeader serverData={{
-          name: "Server",
-          id: serverId,
-          description: "Description",
-          banner: {
-            url: "",
-            type: "solid",
-            color: "#5865f2",
-            gradient: {
-              to: "#3d48b9",
-              from: "#5865f2",
-              angle: 135
-            }
-          },
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          joinedAt: new Date(),
-          ownerId: "ownerId",
-          isPublic: null,
-          inviteCode: null,
-          boostCount: null,
-          avatar: "https://res.cloudinary.com/drhdaopqy/image/upload/tiff/assets/fribble@4x_-snL3C"
-        }}/>
+        <ServerHeader serverData={data?.server}/>
       </SidebarHeader>
       <SidebarContent  >
-        <SidebarTrigger/>
-        <SidebarGroup />
-        <SidebarGroup />
+        {data!.server!.categories!.map((category) => (
+          <CategoryTab key={category.id} category={category} />
+        ))}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
   )
 }
 export default CategorySidebar
+
+
+const CategorySidebarSkeleton = () => {
+  return (
+    <Sidebar variant="sidebar" collapsible="offcanvas" className="translate-x-14 border-border !p-0">
+      <SidebarHeader>
+      <ServerHeaderSkeleton/>
+      </SidebarHeader>
+      <SidebarContent>
+        {/* <SidebarGroup>
+          {Array(5).fill(0).map((_, i) => (
+            <div key={i} className="h-8 w-full animate-pulse bg-gray-200 dark:bg-neutral-900 rounded-md mb-2"></div>
+          ))}
+        </SidebarGroup>
+      */}
+</SidebarContent>
+      <SidebarFooter>
+        <div className="h-12 w-full animate-pulse bg-gray-200 dark:bg-neutral-900 rounded-md"></div>
+      </SidebarFooter>
+    </Sidebar>
+  );
+};
+
+export { CategorySidebarSkeleton };

@@ -7,4 +7,7 @@ export enum QUERY_KEYS {
     UPDATE_SERVER = "update-server",
     SERVERS = "servers",
     IMAGE_UPLOAD = "image-upload",
+    CATEGORIES = "categories",
+    CHANNELS = "channels",
+    CREATE_CATEGORY = "create-category",
 }
