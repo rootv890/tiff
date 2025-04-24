@@ -7,32 +7,36 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
+import { CategoryType, ModalOpenType } from "@/types";
+import EditCategoryForm from "./EditCategoryForm";
 
-import { CreateCategoryForm } from "./CreateCategoryForm";
-import { ModalOpenType } from "@/types";
-
-
-
-export function CreateCategoryModal() {
-  const { open, setOpen } = useModal();
+const EditCategoryModal = () => {
+  const { open, setOpen, categoryData } = useModal();
   return (
     <Dialog
-      open={open === ModalOpenType.CREATE_CATEGORY}
+      open={open === ModalOpenType.EDIT_CATEGORY}
+      // open={true}
       onOpenChange={() => setOpen(null)}
     >
+
       <DialogContent className="bg-background p-8 rounded-lg w-108 ">
+
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold">
-            Create Category
+            Edit Category
           </DialogTitle>
           <DialogDescription className="text-muted-foreground mb-4 text-center">
-            Give your new category a name.
+            Update your category name.
           </DialogDescription>
         </DialogHeader>
-        <CreateCategoryForm />
+        <EditCategoryForm category={categoryData!} />
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default EditCategoryModal;

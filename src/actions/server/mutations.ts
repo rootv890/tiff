@@ -51,3 +51,34 @@ export async function createCategoryAction(
     return { success: false, error: "Failed to create category" };
   }
 }
+
+export async function editCategoryAction(
+  userId: string,
+  serverId: string,
+  categoryId: string,
+  name: string,
+) {
+  try {
+    if (!serverId) {
+      return { success: false, error: "Server ID is required" };
+    }
+
+    if (!categoryId) {
+      return { success: false, error: "Category ID is required" };
+    }
+
+    // He has to be admin or moderator
+    if (!isModerator(userId, serverId) || !isAdmin(userId, serverId)) {
+      return { success: false, error: "User is not an admin or moderator" };
+    }
+    // Main Logic 🧠
+    await db.update(CATEGORIES).set({
+      name,
+      updatedAt: new Date(),
+    }).where(eq(CATEGORIES.id, categoryId));
+    return { success: true, categoryId };
+  } catch (error) {
+    console.error("Failed to edit category:", error);
+    return { success: false, error: "Failed to edit category" };
+  }
+}

@@ -32,7 +32,7 @@ export const CreateCategoryForm = () => {
   const {server, user} = useServer()
 
 
-  const mutation = useMutation({
+  const { mutate ,status, error} = useMutation({
     mutationKey: [QUERY_KEYS.CREATE_CATEGORY],
     mutationFn: async (data: CREATE_CATEGORY_SCHEMA) => {
       const result = await createCategoryAction(user?.id || "", server?.id || "", data.name);
@@ -43,9 +43,8 @@ export const CreateCategoryForm = () => {
     },
     onSuccess: () => {
       toast.success("Category created successfully");
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
       setOpen(null);
-      reset();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to create category");
@@ -56,7 +55,7 @@ export const CreateCategoryForm = () => {
     <form
     className="w-full flex flex-col gap-6" onSubmit={handleSubmit((data: CREATE_CATEGORY_SCHEMA) => {
       console.log(data);
-      mutation.mutate(data);
+      mutate(data);
     })}>
       <div className="flex flex-col gap-2" >
         <Label htmlFor="name" className={cn(errors.name && "text-red-400")}>
@@ -79,17 +78,15 @@ export const CreateCategoryForm = () => {
           Back
         </Button>
 
-        <Button type="submit" size={"lg"} disabled={isSubmitting || isLoading}>
+        <Button type="submit" size={"lg"} disabled={isSubmitting || isLoading || status === "pending"}>
 
-          {isSubmitting || isLoading ? (
+          {isSubmitting || isLoading || status === "pending" ? (
             <RiLoader2Fill className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             "Create"
           )}
         </Button>
       </DialogFooter>
-      {JSON.stringify(watch())}
-
     </form>
   )
 }

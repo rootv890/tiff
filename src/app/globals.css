@@ -15,7 +15,7 @@
 
   --color-popover-background: var(--popover-background);
   --color-popover: var(--color-popover-background)
-    --color-popover-foreground: var(--popover-foreground);
+  --color-popover-foreground: var(--popover-foreground);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-purple: var(--color-purple);

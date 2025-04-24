@@ -14,6 +14,7 @@ import { fetchServerById } from "@/actions/servers/queries"
 import { ServerData, ServerType } from "@/types"
 import { JSX } from "react"
 import CategoryTab from "./CategoryTab"
+import { CreateCategoryModal } from "./mnf/CreateCategoryModal"
 
 
 // query factory

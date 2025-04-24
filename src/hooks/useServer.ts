@@ -1,18 +1,25 @@
-// get current server id
-import { useUser } from "@/hooks/useUser";
-import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/queryKeys";
 import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useUser } from "@/hooks/useUser";
+
+import { QUERY_KEYS } from "@/queryKeys";
 import { fetchServerById } from "@/actions/servers/queries";
 
 export const useServer = () => {
   const { user } = useUser();
   const { sId } = useParams();
-  const { data } = useQuery({
-    queryKey: [QUERY_KEYS.SERVERS, user?.id],
+
+  const isReady = !!user?.id && !!sId;
+
+  const { data, isLoading } = useQuery({
+    queryKey: [QUERY_KEYS.SERVERS, user?.id, sId],
     queryFn: () => fetchServerById(sId as string),
+    enabled: isReady,
   });
-  // once user and server are loaded, return them
-  if (!user || !data) return { server: undefined, user: undefined };
-  return { server: data.server, user };
+
+  return {
+    server: data?.server,
+    user,
+    isLoading: !isReady || isLoading,
+  };
 };

@@ -32,3 +32,38 @@ export async function getServerCategories(serverId: string, userId: string) {
     };
   }
 }
+
+export async function getCategoryById(categoryId: string, userId: string) {
+  try {
+    const category = await db.query.categories.findFirst({
+      where: eq(CATEGORIES.id, categoryId),
+      with: {
+        channels: true,
+      },
+    });
+
+    if (!category) {
+      return {
+        success: false,
+        error: "Category not found",
+      };
+    }
+    if (!isMember(category.serverId, userId)) {
+      return {
+        success: false,
+        error: "User is not a member of the server",
+      };
+    }
+
+    return {
+      success: true,
+      data: category,
+    };
+  } catch (error) {
+    console.error("Failed to get category:", error);
+    return {
+      success: false,
+      error: "Failed to get category",
+    };
+  }
+}

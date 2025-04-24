@@ -58,6 +58,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` ${geistMono.variable} ${ggSans.variable} antialiased`}>
+        <QueryProvider>
         <Toaster richColors closeButton position="top-center"  toastOptions={{
           style: {
             borderRadius: "12px",
@@ -67,12 +68,11 @@ export default function RootLayout({
         }}/>
         <Theme appearance="dark">
           <SidebarProvider>
-          <QueryProvider>
             <ModalProvider>{children}</ModalProvider>
-          </QueryProvider>
           <ThemePanel defaultOpen={false} />
           </SidebarProvider>
         </Theme>
+        </QueryProvider>
       </body>
     </html>
   );
