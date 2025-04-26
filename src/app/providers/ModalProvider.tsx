@@ -7,6 +7,8 @@ interface ModalContextProps {
   setOpen: (open: ModalOpenType | null) => void;
   categoryData: CategoryType | null;
   setCategoryData: (data: CategoryType) => void;
+  from: "server" | "category";
+  setFrom: (from: "server" | "category") => void;
 }
 
 const ModalContext = createContext<ModalContextProps>({
@@ -14,6 +16,8 @@ const ModalContext = createContext<ModalContextProps>({
   setOpen: () => {},
   categoryData: null,
   setCategoryData: () => {},
+  from: "server",
+  setFrom: () => {},
 });
 
 export const useModal = () => {
@@ -23,8 +27,9 @@ export const useModal = () => {
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState<ModalOpenType | null>(null);
   const [categoryData, setCategoryData] = useState<CategoryType | null>(null);
+  const [from, setFrom] = useState<"server" | "category">("server");
   return (
-    <ModalContext.Provider value={{ open, setOpen, setCategoryData, categoryData }}>
+    <ModalContext.Provider value={{ open, setOpen, setCategoryData, categoryData, from, setFrom }}>
       {children}
     </ModalContext.Provider>
   );

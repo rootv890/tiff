@@ -1,12 +1,13 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { CategoryChannelType } from "@/types";
-import { Hash, Megaphone, Volume2 } from "lucide-react";
+import { CategoryChannelType, ChannelSchema, ChannelType } from "@/types";
+
 import ChannelDropdown from "./ChannelDropdown";
+import { GetChannelIcon } from "@/components/GetChannelIcon";
 
 interface ChannelTabProps {
-  channel: CategoryChannelType;
+  channel: ChannelSchema;
   isActive: boolean;
   onClick: () => void;
 }
@@ -21,11 +22,7 @@ const ChannelTab = ({ channel, isActive, onClick }: ChannelTabProps) => {
           isActive ? "bg-accent text-primary" : "text-zinc-400 hover:bg-accent/50 hover:text-zinc-200"
         )}
       >
-        {channel.type === "TEXT" ? (
-          <Hash className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground")} />
-        ) : (
-          <Volume2 className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground")} />
-        )}
+        <GetChannelIcon channelType={channel.type!} />
         <p className={cn(
           "line-clamp-1 font-medium text-sm transition-colors",
           isActive ? "text-primary" : "group-hover/channel:text-zinc-300"

@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 import { nanoid } from "nanoid";
 import { serverAvatarsLink } from "./data";
+import { ChannelType } from "@/types";
 
 const prefixMap = {
     server: "SR_",

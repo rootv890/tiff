@@ -16,7 +16,7 @@ import { ModalOpenType } from "@/types"
 export function ServerDropdown(
   {dropDownOpen, setDropDownOpen}: {dropDownOpen?: boolean, setDropDownOpen?: (open: boolean) => void}
 ) {
-  const { open, setOpen } = useModal()
+  const { setOpen, setFrom } = useModal()
   return (
     <DropdownMenu open={dropDownOpen} onOpenChange={setDropDownOpen}>
       <DropdownMenuTrigger asChild>
@@ -35,7 +35,12 @@ export function ServerDropdown(
           </DropdownMenuItem>
 
           {/* Create new channel option */}
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={
+            ()=>{
+              setFrom("server")
+              setOpen(ModalOpenType.CREATE_CHANNEL)
+            }
+          }>
             <MessageSquarePlus className="mr-2 h-4 w-4" />
             <span>New Channel</span>
           </DropdownMenuItem>

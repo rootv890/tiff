@@ -33,11 +33,12 @@ import { CategoryType, ModalOpenType } from '@/types';
 import { useCategoryChannels } from '@/hooks/useCateogryChannels';
 import ChannelTab from '../channel/ChannelTab';
 import EditCategoryModal from './mnf/EditCategoryModal';
+import { CreateChannelModal } from '../channel/CreateChannelModal';
 
 const CategoryTab = ({ category }:{category: CategoryType}) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
-  const { setOpen, setCategoryData } = useModal();
+  const { setOpen, setFrom, setCategoryData } = useModal();
   const { data: channels } = useCategoryChannels(category.id);
   const isSystemCategory = category.name.toLowerCase() === 'system';
 
@@ -115,7 +116,12 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
                 <TooltipTrigger asChild>
                   <button
                     className="size-5"
-                    onClick={() => setOpen(ModalOpenType.CREATE_CHANNEL)}
+                    onClick={() => {
+                      // alert('Create channel')
+                      setFrom("category")
+                      setOpen(ModalOpenType.CREATE_CHANNEL)
+                      setCategoryData(category);
+                    }}
                   >
                     <Plus className="size-5 text-muted-foreground hover:text-foreground" />
                   </button>
@@ -125,6 +131,7 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            <CreateChannelModal  />
           </div>
         </div>
 

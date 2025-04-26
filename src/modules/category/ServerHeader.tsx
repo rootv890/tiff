@@ -49,8 +49,7 @@ const ServerHeader = (
       </div>
     </div>
     {/* All modals */}
-    <CreateCategoryModal type="CREATE"/>
-    {/* <CreateCategoryModal /> */}
+    <CreateCategoryModal />
     </div>
   )
 }

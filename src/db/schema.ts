@@ -253,6 +253,7 @@ export const channelEnums = pgEnum("channel_type", [
     "TEXT",
     "VOICE",
     "ANNOUNCEMENT",
+    "VIDEO",
 ]);
 
 export const channels = pgTable("channels", {
