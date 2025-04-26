@@ -69,3 +69,11 @@ export const createCategorySchema = z.object({
     name: z.string().min(3).max(20),
 });
 export type CREATE_CATEGORY_SCHEMA = z.infer<typeof createCategorySchema>;
+
+// Channels
+
+export enum ChannelType {
+    TEXT = "TEXT",
+    VOICE = "VOICE",
+    ANNOUNCEMENT = "ANNOUNCEMENT",
+}

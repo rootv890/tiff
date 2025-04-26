@@ -39,7 +39,6 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
   const { setOpen, setCategoryData } = useModal();
   const { data: channels } = useCategoryChannels(category.id);
-
   const isSystemCategory = category.name.toLowerCase() === 'system';
 
   const openEditModal = () => {
@@ -50,7 +49,7 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
   if (isSystemCategory) {
     return (
       <div className="mt-2 px-2 space-y-[2px]">
-        {category.channels.map((channel) => (
+        {category.channels?.map((channel) => (
           <ChannelTab
             key={channel.id}
             channel={channel}
@@ -62,15 +61,16 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
     );
   }
 
+  // console.log('Category', category)
   return (
     <div>
       <Collapsible
-        className="mt-2 px-2"
+        className="mt-2 px-2 group"
         open={isExpanded}
         onOpenChange={setIsExpanded}
       >
         <div className="flex items-center justify-between group">
-          <CollapsibleTrigger className="flex items-center gap-1 py-1 text-sm font-semibold text-muted-foreground group-hover:text-foreground w-full">
+          <CollapsibleTrigger className="flex items-center gap-1 py-1 text-sm font-semibold text-muted-foreground hover:text-foreground w-full">
             {isExpanded ? <ChevronDown className="size-4" /> : <ChevronRight className="size-4" />}
             <span>{category.name}</span>
           </CollapsibleTrigger>
@@ -91,11 +91,14 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
                         setCategoryData(category);
                         setOpen(ModalOpenType.EDIT_CATEGORY);
                       }}>
-                        Edit {category.name}
+                        Edit Category
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem>
                         Copy Category ID
+                        <span className='text-xs'>
+                        {category.id}
+                        </span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -125,15 +128,19 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
           </div>
         </div>
 
+
         <CollapsibleContent className="space-y-0.5 mt-1">
-          {channels?.data?.map((channel) => (
-            <ChannelTab
+          {category.channels?.map((channel) => {
+            console.log('channel', channel)
+            return (
+              <ChannelTab
               key={channel.id}
               channel={channel}
               isActive={channel.id === activeChannelId}
               onClick={() => setActiveChannelId(channel.id)}
             />
-          ))}
+            )
+          })}
         </CollapsibleContent>
       </Collapsible>
       <EditCategoryModal/>

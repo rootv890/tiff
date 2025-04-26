@@ -48,3 +48,6 @@ Tiff UI progress
 4. Generate the invite code
 
 Stopped at adding username for placeholder but gettin undefined because queryDelay
+
+
+for editing category I added setCategory in useModal Hook + Provider

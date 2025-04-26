@@ -14,7 +14,7 @@ import { fetchServerById } from "@/actions/servers/queries"
 import { ServerData, ServerType } from "@/types"
 import { JSX } from "react"
 import CategoryTab from "./CategoryTab"
-import { CreateCategoryModal } from "./mnf/CreateCategoryModal"
+
 
 
 // query factory
@@ -61,11 +61,13 @@ const CategorySidebar = ({
     border-border !p-0" >
       <SidebarHeader >
         <ServerHeader serverData={data?.server}/>
+
       </SidebarHeader>
       <SidebarContent  >
-        {data!.server!.categories!.map((category) => (
-          <CategoryTab key={category.id} category={category} />
-        ))}
+        {data!.server!.categories!.map((category) =>{
+          // console.log('Cat', category)
+           return <CategoryTab key={category.id} category={category} />
+        })}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

@@ -14,6 +14,7 @@ import db from "@/db/db";
 import { categories as CATEGORIES, channels as CHANNELS } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { isAdmin, isModerator } from "../base";
+import { ChannelType } from "@/types";
 
 // Server Mutations
 /**
@@ -82,3 +83,46 @@ export async function editCategoryAction(
     return { success: false, error: "Failed to edit category" };
   }
 }
+
+// Channel
+export const createChannelAction = async (
+  userId: string,
+  serverId: string,
+  categoryId: string,
+  name: string,
+  type: ChannelType,
+) => {
+  if (!serverId) {
+    return { success: false, error: "Server ID is required" };
+  }
+
+  if (!categoryId) {
+    return { success: false, error: "Category ID is required" };
+  }
+
+  if (!name) {
+    return { success: false, error: "Channel name is required" };
+  }
+
+  if (!type) {
+    return { success: false, error: "Channel type is required" };
+  }
+
+  // He has to be admin or moderator
+  if (!isModerator(userId, serverId) || !isAdmin(userId, serverId)) {
+    return { success: false, error: "User is not an admin or moderator" };
+  }
+
+  const channelId = generateId("channel");
+  await db.insert(CHANNELS).values({
+    id: channelId,
+    name,
+    description: null,
+    serverId,
+    categoryId,
+    type,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+  return { success: true, channelId };
+};

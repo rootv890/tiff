@@ -3,10 +3,13 @@
 import { getServerCategories } from "@/actions/server/queries"
 import Debugger from "@/components/tiffui/Debugger"
 import { useUser } from "@/hooks/useUser"
-import { useQuery, UseQueryOptions } from "@tanstack/react-query"
+import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { useModal } from "../providers/ModalProvider"
-import { ModalOpenType } from "@/types"
+import { ChannelType, ModalOpenType } from "@/types"
 import { CreateCategoryModal } from "@/modules/category/mnf/CreateCategoryModal"
+import { createCategoryAction, createChannelAction } from "@/actions/server/mutations"
+import { toast } from "sonner"
+import Button from "@/components/tiffui/Button"
 function useCatgories(serverId: string, userId: string) :UseQueryOptions{
   return useQuery({
     queryKey: ["categories", serverId],
@@ -16,7 +19,21 @@ function useCatgories(serverId: string, userId: string) :UseQueryOptions{
 
 const SeedPage = () => {
   const {user} = useUser()
-  const {data: categories, error, status} = useCatgories("SR_GJknE0ty", user?.id || '')
+  const {data: categories, error, status} = useCatgories("SR_JnqWeFcS", user?.id || '')
+
+  const {mutate, isLoading, data} = useMutation({
+    mutationFn: ()=>{
+      return createChannelAction(user?.id || '', "SR_JnqWeFcS", "CG_RoRTfqb1","NEW  CHANNEL", ChannelType.TEXT)
+    },
+    onSuccess: () => {
+      toast.success("WOW Channel created successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  })
+
+
   const {open, setOpen} = useModal()
   return (
     <div>
@@ -28,7 +45,15 @@ const SeedPage = () => {
       <button onClick={() => setOpen(ModalOpenType.CREATE_CATEGORY)}>
         OPEN MODAL
       </button>
-      <CreateCategoryModal type="EDIT" opts={{ categoryId: "CG_123" }} />
+      <Button onClick={async() => mutate() }>
+        CREATE CHANNEL
+      </Button>
+
+
+
+      <Debugger data={categories} />
+      {/* {data && <Debugger data={data} />} */}
+      <CreateCategoryModal />
     </div>
   )
 }
