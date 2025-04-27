@@ -10,11 +10,14 @@ export const useServer = () => {
   const { sId } = useParams();
 
   const isReady = !!user?.id && !!sId;
-
   const { data, isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.SERVERS, user?.id, sId],
+    queryKey: [QUERY_KEYS.SERVER, QUERY_KEYS.CATEGORIES, {
+      serverId: sId as string,
+      userId: user?.id,
+    }],
     queryFn: () => fetchServerById(sId as string),
     enabled: isReady,
+    refetchOnWindowFocus: false,
   });
 
   return {

@@ -14,6 +14,7 @@ import { fetchServerById } from "@/actions/servers/queries"
 import { ServerData } from "@/types"
 import { JSX } from "react"
 import CategoryTab from "./CategoryTab"
+import { InviteToServerModal } from "../server/InviteToServer"
 
 
 
@@ -22,7 +23,7 @@ const useServerById = (
   serverId: string,
 ): UseQueryOptions<ServerData, Error> => {
   return {
-    queryKey: [QUERY_KEYS.CATEGORIES,QUERY_KEYS.SERVER , {
+    queryKey: [QUERY_KEYS.SERVER, QUERY_KEYS.CATEGORIES , {
       serverId
     }],
     queryFn: async () => await fetchServerById(serverId)
@@ -94,7 +95,6 @@ const CategorySidebarSkeleton = () => {
 </SidebarContent>
       <SidebarFooter>
         <div className="h-12 w-full animate-pulse bg-gray-200 dark:bg-neutral-900 rounded-md"></div>
-
       </SidebarFooter>
     </Sidebar>
   );

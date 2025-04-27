@@ -17,6 +17,8 @@ export enum ModalOpenType {
     CREATE_CHANNEL = "CREATE_CHANNEL",
     EDIT_CHANNEL = "EDIT_CHANNEL",
     DELETE_CHANNEL = "DELETE_CHANNEL",
+    // Invite
+    INVITE_TO_SERVER = "INVITE_TO_SERVER",
 }
 
 // sign in

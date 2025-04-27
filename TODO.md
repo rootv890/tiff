@@ -1,54 +1,86 @@
 # Project TODOs
 
-Last updated: April 15, 2025
+**Last Updated:** April 15, 2025
+
+This document outlines the remaining tasks for the project.
 
 ## Features
 
-### All Servers Page
-- File: `src/app/servers/all/pages.tsx`
-- [x] Map all servers
-- [ ] Add search bar
-- [x] Add server list
-- [ ] Add pagination
-- [ ] Soriting by Name, Last Joined, Muted, Hidden, Last Active
-- [ ] Discovery button
+### All Servers Page (`src/app/servers/all/pages.tsx`)
 
+**Status:** In Progress
 
-### ServerCard.tsx
-- File: `src/modules/server/ServerCard.tsx`
-- [ ] Add online and total members indicator i
-- [ ] Add joined date
-- [ ] Leave Server, Mute Server and Hide Server from sidebar Feature from More button at
-- [ ] If muted Indicator, hidden indicator
-- [ ] Last seen
+- [x] Display all servers
+- [x] List servers
+- [ ] Add search functionality
+- [ ] Implement pagination
+- [ ] Implement sorting:
+    - [ ] By Name
+    - [ ] By Last Joined
+    - [ ] By Muted status
+    - [ ] By Hidden status
+    - [ ] By Last Active
+- [ ] Implement Discovery button
 
+### Server Card (`src/modules/server/ServerCard.tsx`)
 
-### Server
--[x] Add server
--[x] Add Category
--[x] Add Channels
--[x] System Channel and Categories
--[ ] Restrict System Channel and Categories from deletion
--[ ] Restrict System Categories from editing
-## User Button
-Comphrensive user component with user profile, Active, status, and other features like notifications, settings, etc.
+**Status:** To Do
 
+- [ ] Display online and total member count
+- [ ] Show server join date
+- [ ] Implement "More" button with actions:
+    - [ ] Leave Server
+    - [ ] Mute Server
+    - [ ] Hide Server from sidebar
+- [ ] Indicate if the server is muted
+- [ ] Indicate if the server is hidden
+- [ ] Display "Last Seen" information
 
+### Server Functionality
 
-## Authentication Features
-- [x] Implement toast notifications in SignUp form
-  - File: `src/modules/auth/SignUpForm.tsx`
-- [ ] Create custom useSign hook with react-query integration
-  - File: `src/react-queries/user.ts`
-  - Purpose: Improve authentication flow with proper query management
+**Status:** In Progress
+- [x] Add new server creation
+- [x] Add category creation
+- [x] Add channel creation
+- [x] Implement system channel and categories
+- [ ] Channel and System Deletion
+- [ ] Prevent deletion of system channels and categories
+- [ ] Prevent editing of system categories
+- [ ] Implement user invitation functionality
+- [ ] Implement User Button integration
+- [ ] Implement Server Settings:
+    - [ ] Rename Server
+    - [ ] Leave Server
+    - [ ] Delete Server
+- [ ] Admin and Mod only feature integration
 
-## How to Use
-- Check the box `[x]` when a todo is completed
-- Add new todos following the same format
-- Keep categories organized and clear
+### User Button Component
 
+**Status:** To Do
 
+Implement a comprehensive user component with:
 
-## Over thinking features
-1.  Discover based on user interests
-2. Ask user for his/her interests
+- User profile display
+- Online/active status indicator
+- Additional features (e.g., notifications, settings)
+
+### Authentication Features
+
+**Status:** In Progress
+
+- [x] Implement toast notifications in SignUp form (`src/modules/auth/SignUpForm.tsx`)
+- [ ] Create custom `useSign` hook with React Query integration (`src/react-queries/user.ts`)
+    - **Purpose:** Improve authentication flow with efficient query management.
+
+## Future Considerations (Overthinking Features)
+
+These are potential features that are not currently prioritized but worth considering for the future:
+
+1. Discover servers based on user interests.
+2. Implement a mechanism to ask users about their interests during onboarding or profile setup.
+
+## How to Use This Document
+
+- Use `[x]` to mark a task as complete.
+- Add new tasks following the same format under the relevant category.
+- Keep the categories clear and well-organized.

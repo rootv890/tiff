@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 import { nanoid } from "nanoid";
 import { serverAvatarsLink } from "./data";
 import { ChannelEnum } from "@/types";
+import { env } from "@/env";
 
 const prefixMap = {
     server: "SR_",
@@ -19,6 +20,7 @@ const prefixMap = {
     emoji: "EM_",
     system: "SYS_",
     categoryChannel: "CGCH_",
+    invite: "i",
 };
 
 type IDtype = keyof typeof prefixMap;

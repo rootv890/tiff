@@ -11,10 +11,16 @@
 
 import { generateId } from "@/lib/utils";
 import db from "@/db/db";
-import { categories as CATEGORIES, channels as CHANNELS } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import {
+  categories as CATEGORIES,
+  channels as CHANNELS,
+  serverMembers as MEMBERS,
+  servers as SERVER,
+} from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 import { isAdmin, isModerator } from "../base";
 import { ChannelEnum, ChannelType } from "@/types";
+import { User } from "better-auth";
 
 // Server Mutations
 /**
@@ -168,4 +174,54 @@ export const mutateChannelAction = async (
     console.error("Failed to mutate channel:", error);
     return { success: false, error: "Failed to mutate channel" };
   }
+};
+
+export const generateNewServerInviteCode = async (
+  serverId: string,
+  userId: string,
+) => {
+  // isModerator or isAdmin
+  if (!isModerator(userId, serverId) && !isAdmin(userId, serverId)) {
+    return { success: false, error: "User is not an admin or moderator" };
+  }
+
+  const inviteCode = generateId("invite", 6);
+  // update DB
+  await db.update(SERVER).set({
+    inviteCode,
+    updatedAt: new Date(),
+  }).where(eq(SERVER.id, serverId));
+  return { success: true, inviteCode };
+};
+
+export const deleteServerAction = async () => {};
+
+export const acceptUserByInviteCodeAction = async (
+  user: User,
+  inviteCode: string,
+  serverId: string,
+) => {
+  // Main Logic 🧠
+
+  const alreadyJoined = await db.select().from(MEMBERS).where(
+    and(
+      eq(MEMBERS.userId, user.id),
+      eq(MEMBERS.serverId, serverId),
+    ),
+  );
+
+  if (alreadyJoined.length > 0) {
+    return { success: false, error: "User is already a member of this server" };
+  }
+
+  const member = await db.insert(MEMBERS).values({
+    id: generateId("member"),
+    userId: user.id,
+    serverId,
+    role: "member",
+    nickname: user.name,
+    joinedAt: new Date(),
+  }).returning();
+
+  return { success: true, member };
 };

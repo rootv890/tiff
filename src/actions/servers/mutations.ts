@@ -68,6 +68,7 @@ export const createServerAction = async (
       };
     }
 
+    const inviteCode = generateId("invite");
     const [server] = await db.insert(SERVERS).values({
       name: data.name,
       ownerId: data.ownerId,
@@ -75,7 +76,7 @@ export const createServerAction = async (
       banner: data.banner,
       avatar: data.avatar,
       isPublic: true,
-      inviteCode: "",
+      inviteCode: inviteCode,
       createdAt: new Date(),
       updatedAt: new Date(),
       id: serverId,

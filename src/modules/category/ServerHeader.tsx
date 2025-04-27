@@ -5,7 +5,7 @@ import { Skeleton } from "@radix-ui/themes"
 import { useState } from "react"
 import { ServerDropdown } from "./ServerDropdown"
 import { CreateCategoryModal } from "./mnf/CreateCategoryModal"
-
+import { InviteToServerModal } from "../server/InviteToServer"
 
 
 interface ServerHeaderProps {
@@ -50,6 +50,7 @@ const ServerHeader = (
     </div>
     {/* All modals */}
     <CreateCategoryModal />
+    <InviteToServerModal/>
     </div>
   )
 }

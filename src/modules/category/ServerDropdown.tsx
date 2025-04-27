@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
+import { BsPersonPlusFill } from "react-icons/bs";
 import { ChevronDown, FolderPlus, MessageSquarePlus, LogOut, Trash2, Rocket, Bell, EyeOff, XIcon, Settings } from "lucide-react"
 
 import { toast } from "sonner"
@@ -47,6 +48,14 @@ export function ServerDropdown(
 
           <DropdownMenuSeparator />
           {/* Server Settings */}
+          <DropdownMenuItem className="bg-background/60 hover:bg-background/40"
+            onClick={()=>{
+              setOpen(ModalOpenType.INVITE_TO_SERVER)
+            }}
+          >
+            <BsPersonPlusFill className="mr-2 h-4 w-4" />
+            <span>Invite People</span>
+          </DropdownMenuItem>
           <DropdownMenuItem className="bg-background/60 hover:bg-background/40">
             <Settings className="mr-2 h-4 w-4" />
             <span>Server Settings</span>

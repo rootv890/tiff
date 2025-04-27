@@ -1,7 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
-import { categories as CATEGORIES } from "@/db/schema";
+import { categories as CATEGORIES, servers as SERVER } from "@/db/schema";
 import db from "@/db/db";
 import { isMember } from "../base";
 
@@ -66,4 +66,14 @@ export async function getCategoryById(categoryId: string, userId: string) {
       error: "Failed to get category",
     };
   }
+}
+
+export async function getServerByInviteCode(inviteCode: string) {
+  return await db.query.servers.findFirst({
+    where: eq(SERVER.inviteCode, inviteCode),
+    with: {
+      owner: true,
+      members: true,
+    },
+  });
 }
