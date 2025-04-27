@@ -3,6 +3,7 @@ export enum QUERY_KEYS {
     SERVER = "server",
     SESSION = "session",
     SIGN_IN = "sign-in",
+    MEMBERS = "member",
     CREATE_SERVER = "create-server",
     UPDATE_SERVER = "update-server",
     SERVERS = "servers",

@@ -193,6 +193,7 @@ export const serverMembers = pgTable("server_members", {
     role: roleEnum("role").notNull(),
     nickname: text("nickname"),
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
+    // updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const serverMembersRelations = relations(

@@ -225,3 +225,41 @@ export const acceptUserByInviteCodeAction = async (
 
   return { success: true, member };
 };
+
+export const updateMemberAction = async (
+  userId: string,
+  serverId: string,
+  memberId: string,
+  role: string,
+) => {
+  // isModerator or isAdmin
+  if (!isModerator(userId, serverId) && !isAdmin(userId, serverId)) {
+    return { success: false, error: "User is not an admin or moderator" };
+  }
+
+  // Main Logic 🧠
+  await db.update(MEMBERS).set({
+    role: role as "owner" | "admin" | "member",
+  }).where(eq(MEMBERS.id, memberId));
+  return { success: true, memberId };
+};
+
+export const kickUserAction = async (
+  userId: string,
+  serverId: string,
+  memberId: string,
+) => {
+  // isModerator or isAdmin
+  if (!isModerator(userId, serverId) && !isAdmin(userId, serverId)) {
+    return { success: false, error: "User is not an admin or moderator" };
+  }
+
+  // Main Logic 🧠
+  await db.delete(MEMBERS).where(
+    and(
+      eq(MEMBERS.id, memberId),
+      eq(MEMBERS.serverId, serverId),
+    ),
+  );
+  return { success: true, memberId };
+};

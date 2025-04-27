@@ -84,3 +84,10 @@ These are potential features that are not currently prioritized but worth consid
 - Use `[x]` to mark a task as complete.
 - Add new tasks following the same format under the relevant category.
 - Keep the categories clear and well-organized.
+
+
+
+## Right now todos
+1. User Role in the Server with Context Menu
+2. User Setting - Change Username, profile,status
+3. Server Settings - Rename Server, Leave Server, Delete Server

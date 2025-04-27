@@ -2,15 +2,16 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 import { GoHorizontalRule } from "react-icons/go";
+import { MemberButton } from "./MemberTab";
+import { useEffect, useState } from "react";
+import { MemberType } from "@/types";
+import { useServer } from "@/hooks/useServer";
 
 
 
@@ -21,7 +22,6 @@ const MemberSidebar = (
  const [members, setMembers] = useState<MemberType[]>([])
  const [owners , setOwners] = useState<MemberType[]>([])
  const [moderators , setModerators] = useState<MemberType[]>([])
-//  const [banned , setBanned] = useState<User[]>([])
   const { server } = useServer()
 
   useEffect(() => {
@@ -83,23 +83,3 @@ const MemberSidebar = (
   )
 }
 export default MemberSidebar
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useServer } from "@/hooks/useServer";
-import { useEffect, useState } from "react";
-import { MemberType } from "@/types";
-// Adjust if your User type is elsewhere
-
-export const MemberButton = ({ member }: { member:  MemberType}) => {
-  return (
-    <button className="flex items-center gap-2 w-full px-2 py-1.5 rounded-md hover:bg-card/70 transition">
-      <Avatar className="size-7">
-        <AvatarImage src={member.user.image || "/default-avatar.png"} alt={member.user.name} />
-        <AvatarFallback>
-          {member.user.username.charAt(0).toUpperCase()}
-        </AvatarFallback>
-      </Avatar>
-      <span className="text-sm font-medium truncate">{member.user.name}</span>
-    </button>
-  );
-};
