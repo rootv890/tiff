@@ -53,7 +53,7 @@ This document outlines the remaining tasks for the project.
     - [ ] Leave Server
     - [ ] Delete Server
 - [ ] Admin and Mod only feature integration
-
+- [ ] Member Sidebar
 ### User Button Component
 
 **Status:** To Do

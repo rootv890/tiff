@@ -34,7 +34,11 @@ export const fetchServerById = async (
   const server = await db.query.servers.findFirst({
     where: eq(servers.id, serverId),
     with: {
-      members: true,
+      members: {
+        with: {
+          user: true,
+        },
+      },
       owner: true,
       system: true,
       categories: {

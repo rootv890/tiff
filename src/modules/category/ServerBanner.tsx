@@ -1,16 +1,6 @@
 import { BannerType } from "@/types";
 
-/**
- * Renders a server banner.
- *
- * @param {object} props
- * @prop {BannerType} banner - The banner object
- *
- * @returns {React.ReactElement} The banner element
- *
- * @example
- * <ServerBanner banner={{ type: "solid", color: "#5865f2" }} />
- */
+
 export function ServerBanner({ banner }: { banner: BannerType }) {
   return (
     <div className="absolute top-0 left-0 w-full h-32 overflow-hidden z-0">

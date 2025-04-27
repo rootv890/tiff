@@ -17,9 +17,7 @@ import CategoryTab from "./CategoryTab"
 import { InviteToServerModal } from "../server/InviteToServer"
 import { cn } from "@/lib/utils"
 import { useUser } from "@/hooks/useUser"
-
-
-
+import UserButton from "@/components/UserButton"
 // query factory
 const useServerById = (
   serverId: string,
@@ -66,9 +64,8 @@ const CategorySidebar = ({
 
   return (
     <Sidebar
-
-    variant="sidebar" collapsible="offcanvas" className={
-      cn("border-border translate-x-14 !p-0",
+    variant="sidebar" collapsible="none" className={
+      cn("border-border !p-0 relative",
         '[data-state=collapsed]:-translate-x-20 ease-in-out',
       )
     }>
@@ -82,7 +79,9 @@ const CategorySidebar = ({
            return <CategoryTab key={category.id} category={category} />
         })}
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <UserButton/>
+      </SidebarFooter>
     </Sidebar>
   )
 }

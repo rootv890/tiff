@@ -7,6 +7,7 @@ import {
     selectServerSchema,
     user,
 } from "./db/schema";
+import { User } from "./auth/auth";
 
 export enum ModalOpenType {
     CREATE_SERVER = "CREATE_SERVER",
@@ -57,6 +58,7 @@ export type ServerType = Omit<z.infer<typeof selectServerSchema>, "banner"> & {
     joinedAt: Date | string;
     banner: BannerType;
     categories: CategoryType[];
+    members: MemberType[];
 };
 export type ServerData = {
     success: boolean;
@@ -86,3 +88,10 @@ export enum ChannelEnum {
     VIDEO = "VIDEO",
     ANNOUNCEMENT = "ANNOUNCEMENT",
 }
+
+export type MemberType = {
+    userId: string;
+    role: RoleType;
+    user: User;
+    id: string;
+};

@@ -2,6 +2,7 @@
 
 
 import CategorySidebar from "@/modules/category/CategorySidebar";
+import MemberSidebar from "@/modules/member/MemberSidebar";
 import { useParams } from "next/navigation";
 
 const ServerLayout = (
@@ -10,11 +11,10 @@ const ServerLayout = (
   const { sId } = useParams();
   if (!sId) return <div className="h-full">Server not found</div>;
   return (
-    <div className="h-full relative bg-emerald-100 w-full">
+    <div className="h-full flex relative  w-full">
         <CategorySidebar serverId={sId as string} />
-      <div className="w-full">
       {children}
-      </div>
+        <MemberSidebar serverId={sId as string}/>
     </div>
   )
 }
