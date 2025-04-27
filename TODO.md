@@ -8,7 +8,7 @@ Last updated: April 15, 2025
 - File: `src/app/servers/all/pages.tsx`
 - [x] Map all servers
 - [ ] Add search bar
-- [ ] Add server list
+- [x] Add server list
 - [ ] Add pagination
 - [ ] Soriting by Name, Last Joined, Muted, Hidden, Last Active
 - [ ] Discovery button
@@ -23,13 +23,20 @@ Last updated: April 15, 2025
 - [ ] Last seen
 
 
+### Server
+-[x] Add server
+-[x] Add Category
+-[x] Add Channels
+-[x] System Channel and Categories
+-[ ] Restrict System Channel and Categories from deletion
+-[ ] Restrict System Categories from editing
 ## User Button
 Comphrensive user component with user profile, Active, status, and other features like notifications, settings, etc.
 
 
 
 ## Authentication Features
-- [ ] Implement toast notifications in SignUp form
+- [x] Implement toast notifications in SignUp form
   - File: `src/modules/auth/SignUpForm.tsx`
 - [ ] Create custom useSign hook with react-query integration
   - File: `src/react-queries/user.ts`

@@ -14,7 +14,7 @@ import db from "@/db/db";
 import { categories as CATEGORIES, channels as CHANNELS } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { isAdmin, isModerator } from "../base";
-import { ChannelType } from "@/types";
+import { ChannelEnum, ChannelType } from "@/types";
 
 // Server Mutations
 /**
@@ -90,7 +90,7 @@ export const createChannelAction = async (
   serverId: string,
   categoryId: string,
   name: string,
-  type: ChannelType,
+  type: ChannelEnum,
 ) => {
   if (!serverId) {
     return { success: false, error: "Server ID is required" };
@@ -125,4 +125,47 @@ export const createChannelAction = async (
     updatedAt: new Date(),
   });
   return { success: true, channelId };
+};
+
+export const mutateChannelAction = async (
+  userId: string,
+  data: ChannelType,
+) => {
+  try {
+    if (!data.id) {
+      return { success: false, error: "Channel ID is required" };
+    }
+
+    if (!data.name) {
+      return { success: false, error: "Channel name is required" };
+    }
+
+    if (!data.type) {
+      return { success: false, error: "Channel type is required" };
+    }
+
+    if (!data.categoryId) {
+      return { success: false, error: "Category ID is required" };
+    }
+
+    // He has to be admin or moderator
+    if (
+      !isModerator(userId, data.serverId) || !isAdmin(userId, data.serverId)
+    ) {
+      return { success: false, error: "User is not an admin or moderator" };
+    }
+
+    // Main Logic 🧠
+    await db.update(CHANNELS).set({
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      updatedAt: new Date(),
+      categoryId: data.categoryId,
+    }).where(eq(CHANNELS.id, data.id));
+    return { success: true, channelId: data.id };
+  } catch (error) {
+    console.error("Failed to mutate channel:", error);
+    return { success: false, error: "Failed to mutate channel" };
+  }
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryChannelType } from "@/types";
+import { CategoryChannelType, ChannelType, ModalOpenType } from "@/types";
 import {
   Settings,
   Bell,
@@ -29,9 +29,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { useModal } from "@/app/providers/ModalProvider";
 
 interface ChannelDropdownProps {
-  channel: CategoryChannelType;
+  channel: ChannelType;
   onEditChannel?: () => void;
   onDeleteChannel?: () => void;
   children?: React.ReactNode;
@@ -44,6 +45,7 @@ export function ChannelDropdown({
   children
 }: ChannelDropdownProps) {
   // Helper function to get icon based on channel type
+  const {setChannelData, setOpen} = useModal()
   const getChannelIcon = (type?: string) => {
     switch (type) {
       case "TEXT":
@@ -89,13 +91,15 @@ export function ChannelDropdown({
       <DropdownMenuContent className="w-60 rounded-xl backdrop-blur-2xl" side="right" align="start">
         <DropdownMenuLabel className="flex items-center gap-2 px-3 py-2 text-xs">
           {getChannelIcon(channel.type)}
-          <span className="font-semibold">{channel.name || `Channel ${channel.position}`}</span>
+          <span className="font-semibold">{channel.name}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-
         <DropdownMenuGroup>
           {/* Edit Channel */}
-          <DropdownMenuItem onClick={onEditChannel}>
+          <DropdownMenuItem onClick={()=>{
+              setChannelData(channel)
+              setOpen(ModalOpenType.EDIT_CHANNEL)
+          }}>
             <Pencil className="mr-2 h-4 w-4" />
             <span>Edit Channel</span>
           </DropdownMenuItem>
@@ -146,7 +150,7 @@ export function ChannelDropdown({
 
         {/* Show "Coming Soon" badge for features that are in development */}
         <div className="px-3 py-2">
-          <Badge variant="outline" className="text-xs w-full justify-center">
+          <Badge variant="secondary" className="text-xs w-full justify-center border-border border-2">
             Some features coming in v2.0
           </Badge>
         </div>

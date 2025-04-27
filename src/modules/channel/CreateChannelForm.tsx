@@ -6,7 +6,7 @@ import { Input } from "@/components/tiffui/Input"
 import Button from "@/components/tiffui/Button"
 import { DialogFooter } from "@/components/ui/dialog"
 import { useModal } from "@/app/providers/ModalProvider"
-import { CategoryType, ChannelType } from "@/types"
+import { CategoryType, ChannelEnum } from "@/types"
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "sonner";
@@ -32,7 +32,7 @@ import { z } from "zod"
 
 const CREATE_CHANNEL_SCHEMA = z.object({
   name: z.string().min(3).max(20),
-  type: z.nativeEnum(ChannelType),
+  type: z.nativeEnum(ChannelEnum),
   serverId: z.string(),
   categoryId: z.string().optional(),
 })
@@ -56,7 +56,7 @@ export const CreateChannelForm = (
   const { register, handleSubmit,control, formState: { errors , isSubmitting , isLoading }, watch } = useForm<createChannelType>({
     resolver: zodResolver(CREATE_CHANNEL_SCHEMA),
     defaultValues:{
-      type: ChannelType.TEXT,
+      type: ChannelEnum.TEXT,
       serverId: categoryData?.serverId || server?.id || "",
       name: "",
       categoryId: from === "category" ? categoryData?.id : ""
@@ -70,7 +70,7 @@ export const CreateChannelForm = (
   const { mutate ,status, error} = useMutation({
     mutationKey: [QUERY_KEYS.CREATE_CHANNEL],
     mutationFn: async (data: createChannelType) => {
-      const result = await createChannelAction(user?.id || "", server?.id || "", data.categoryId!,  data.name, data.type as ChannelType);
+      const result = await createChannelAction(user?.id || "", server?.id || "", data.categoryId!,  data.name, data.type as ChannelEnum);
       if (!result.success) {
         throw new Error(result.error);
       }
@@ -117,7 +117,7 @@ export const CreateChannelForm = (
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {Object.values(ChannelType).map((type) => (
+                {Object.values(ChannelEnum).map((type) => (
                   <SelectItem key={type} value={type}>
                     {type}
                   </SelectItem>

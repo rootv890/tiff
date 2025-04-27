@@ -1,13 +1,13 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { CategoryChannelType, ChannelSchema, ChannelType } from "@/types";
+import { CategoryChannelType, ChannelType, ChannelEnum } from "@/types";
 
 import ChannelDropdown from "./ChannelDropdown";
 import { GetChannelIcon } from "@/components/GetChannelIcon";
 
 interface ChannelTabProps {
-  channel: ChannelSchema;
+  channel: ChannelType;
   isActive: boolean;
   onClick: () => void;
 }
@@ -22,7 +22,7 @@ const ChannelTab = ({ channel, isActive, onClick }: ChannelTabProps) => {
           isActive ? "bg-accent text-primary" : "text-zinc-400 hover:bg-accent/50 hover:text-zinc-200"
         )}
       >
-        <GetChannelIcon channelType={channel.type!} />
+        <GetChannelIcon channelType={channel.type as ChannelEnum} />
         <p className={cn(
           "line-clamp-1 font-medium text-sm transition-colors",
           isActive ? "text-primary" : "group-hover/channel:text-zinc-300"

@@ -15,6 +15,8 @@ export enum ModalOpenType {
     EDIT_CATEGORY = "EDIT_CATEGORY",
     // Channel
     CREATE_CHANNEL = "CREATE_CHANNEL",
+    EDIT_CHANNEL = "EDIT_CHANNEL",
+    DELETE_CHANNEL = "DELETE_CHANNEL",
 }
 
 // sign in
@@ -74,9 +76,9 @@ export const createCategorySchema = z.object({
 export type CREATE_CATEGORY_SCHEMA = z.infer<typeof createCategorySchema>;
 export type CREATE_CHANNEL_SCHEMA = z.infer<typeof createChannelSchema>;
 // Channels
-export type ChannelSchema = z.infer<typeof selectChannelSchema>;
+export type ChannelType = z.infer<typeof selectChannelSchema>;
 
-export enum ChannelType {
+export enum ChannelEnum {
     TEXT = "TEXT",
     VOICE = "VOICE",
     VIDEO = "VIDEO",

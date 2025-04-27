@@ -26,10 +26,10 @@ export function ServerDropdown(
           }
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent  className="w-58  rounded-xl backdrop-blur-2xl" sticky="partial" side="bottom" align="end">
+      <DropdownMenuContent  className="w-58  rounded-xl bg-background/60 backdrop-blur-2xl" sticky="partial" side="bottom" align="end">
         <DropdownMenuGroup>
           {/* Create new category option */}
-          <DropdownMenuItem onClick={() => setOpen(ModalOpenType.CREATE_CATEGORY)}>
+          <DropdownMenuItem className="bg-background/60 hover:bg-background/40"  onClick={() => setOpen(ModalOpenType.CREATE_CATEGORY)}>
             <FolderPlus className="mr-2 h-4 w-4" />
             <span>New Category</span>
           </DropdownMenuItem>
@@ -47,13 +47,13 @@ export function ServerDropdown(
 
           <DropdownMenuSeparator />
           {/* Server Settings */}
-          <DropdownMenuItem>
+          <DropdownMenuItem className="bg-background/60 hover:bg-background/40">
             <Settings className="mr-2 h-4 w-4" />
             <span>Server Settings</span>
           </DropdownMenuItem>
 
           {/* Server boost option */}
-          <DropdownMenuItem>
+          <DropdownMenuItem className="bg-background/60 hover:bg-background/40" >
             <Rocket className="mr-2 h-4 w-4 text-pink-500" />
             <span>Server Boost</span>
             <Badge  className="text-muted-foreground text-xs" variant="secondary">

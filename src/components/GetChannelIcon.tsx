@@ -1,15 +1,17 @@
 
-import { ChannelType } from "@/types";
+import { ChannelEnum } from "@/types";
 import { Hash, Megaphone, Video, Volume2 } from "lucide-react";
-export const GetChannelIcon = ({ channelType }: { channelType: ChannelType }) => {
+export const GetChannelIcon = ({ channelType }: { channelType:
+    ChannelEnum
+ }) => {
     switch (channelType) {
-        case ChannelType.TEXT:
+        case ChannelEnum.TEXT:
             return <Hash className="h-4 w-4" />;
-        case ChannelType.VOICE:
+        case ChannelEnum.VOICE:
             return <Volume2 className="h-4 w-4" />;
-        case ChannelType.ANNOUNCEMENT:
+        case ChannelEnum.ANNOUNCEMENT:
             return <Megaphone className="h-4 w-4" />;
-        case ChannelType.VIDEO:
+        case ChannelEnum.VIDEO:
             return <Video className="h-4 w-4" />;
     }
 };

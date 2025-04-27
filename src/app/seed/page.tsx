@@ -5,7 +5,7 @@ import Debugger from "@/components/tiffui/Debugger"
 import { useUser } from "@/hooks/useUser"
 import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { useModal } from "../providers/ModalProvider"
-import { ChannelType, ModalOpenType } from "@/types"
+import { ChannelEnum, ModalOpenType } from "@/types"
 import { CreateCategoryModal } from "@/modules/category/mnf/CreateCategoryModal"
 import { createCategoryAction, createChannelAction } from "@/actions/server/mutations"
 import { toast } from "sonner"
@@ -23,7 +23,7 @@ const SeedPage = () => {
 
   const {mutate, isLoading, data} = useMutation({
     mutationFn: ()=>{
-      return createChannelAction(user?.id || '', "SR_JnqWeFcS", "CG_RoRTfqb1","NEW  CHANNEL", ChannelType.TEXT)
+      return createChannelAction(user?.id || '', "SR_JnqWeFcS", "CG_RoRTfqb1","NEW  CHANNEL", ChannelEnum.TEXT)
     },
     onSuccess: () => {
       toast.success("WOW Channel created successfully");

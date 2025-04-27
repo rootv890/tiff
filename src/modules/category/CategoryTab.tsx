@@ -34,6 +34,7 @@ import { useCategoryChannels } from '@/hooks/useCateogryChannels';
 import ChannelTab from '../channel/ChannelTab';
 import EditCategoryModal from './mnf/EditCategoryModal';
 import { CreateChannelModal } from '../channel/CreateChannelModal';
+import EditChannelModal from '../channel/EditChannelModal';
 
 const CategoryTab = ({ category }:{category: CategoryType}) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -151,6 +152,7 @@ const CategoryTab = ({ category }:{category: CategoryType}) => {
         </CollapsibleContent>
       </Collapsible>
       <EditCategoryModal/>
+      <EditChannelModal/>
     </div>
   );
 };
