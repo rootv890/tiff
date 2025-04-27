@@ -3,9 +3,9 @@
 import { getServerByInviteCode } from "@/actions/server/queries";
 import { useUser } from "@/hooks/useUser";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import Image from "next/image"; // Or use Shadcn Avatar if configured
-
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {motion} from 'motion/react'
 import {
   Card,
   CardContent,
@@ -14,113 +14,141 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton"; // Shadcn skeleton
+import Image from "next/image";
 import { acceptUserByInviteCodeAction } from "@/actions/server/mutations";
 import { User } from "better-auth";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-// Input component was requested, but not visible in the image layout.
-// import { Input } from "@/components/ui/input";
-
-// Assuming you have a component for the Server Avatar, or just use a simple img
-// Example placeholder if needed:
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import InviteSkeleton from "./_components/InviteSkeleton";
+import InvalidInviteCard from "./_components/InvalidInvite";
 
 const InvitePage = () => {
   const { inviteId } = useParams();
-  const { user } = useUser(); // Although user is fetched, it's not used in the *display* part of the invite card itself based on the image.
-const router = useRouter()
+  const { user } = useUser();
+  const router = useRouter();
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["server-invite", inviteId], // Changed key slightly for clarity it's invite data
+    queryKey: ["server-invite", inviteId],
     queryFn: () => getServerByInviteCode(inviteId as string),
-    enabled: !!inviteId, // Only run the query if inviteId is available
+    enabled: !!inviteId,
   });
 
-  const {mutateAsync, status, error: mutationError} =  useMutation({
+  const { mutateAsync, status, error: mutationError } = useMutation({
     mutationKey: ["accept-invite", inviteId],
     mutationFn: () => acceptUserByInviteCodeAction(user as User, inviteId as string, data?.id as string),
-    onSuccess: () => {
-      // Handle success, e.g., redirect to server
-      toast.success("Joined server successfully");
-      // Redirect to server
-      router.push(`/servers/${data?.id}`);
+    onSuccess: (info) => {
+      if (info.success) {
+        toast.success("Joined server successfully");
+        router.push(`/servers/${data?.id}`);
+      }
+      if (info.error) {
+        toast.warning(info.error);
+      }
     },
-  })
+  });
 
   const handleAccept = async () => {
-   await mutateAsync();
-  }
+    await mutateAsync();
+  };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading invite...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <InviteSkeleton />
+      </div>
+    );
   }
 
-  if (error) {
-    // Handle error, e.g., invite not found or expired
-    return <div className="flex justify-center items-center h-screen text-red-500">Error loading invite: {(error as Error).message}</div>;
-  }
-
-  // If data is null or undefined after loading, handle it
-  if (!data) {
-      return <div className="flex justify-center items-center h-screen text-yellow-500">Invalid or expired invite link.</div>;
+  if (error || !data) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <InvalidInviteCard />
+      </div>
+    );
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br w-full from-purple-700 to-indigo-900 p-4"> {/* Add background styling */}
-      <Card className="w-full max-w-sm rounded-3xl  bg-card text-card-foreground shadow-lg "> {/* Use Shadcn Card */}
-        <CardHeader className="flex flex-col items-center text-center pt-6">
-          {/* Server Avatar */}
-          <div className="mb-4">
-            {data.avatar ? (
-               <Image
-                 src={data.avatar}
-                 alt={`${data.name} avatar`}
-                 width={80} // Adjust size as needed
-                 height={80} // Adjust size as needed
-                 className="rounded-full object-cover border-4 border-accent aspect-square" // Basic styling
-               />
-            ) : (
-              // Fallback for no avatar
-              <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-xl font-bold">
-                 {data.name[0]}
-              </div>
-            )}
-          </div>
+    <div className="flex justify-center items-center h-screen bg-gradient-to-br w-full from-purple-700 to-indigo-900 p-4">
+      {/* Animate the Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, filter: "blur(8px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-sm"
+      >
+        <Card className="rounded-3xl bg-card text-card-foreground shadow-lg">
+          <CardHeader className="flex flex-col items-center text-center pt-6">
+            <div className="mb-4">
+              {data.avatar ? (
+                <Image
+                  src={data.avatar}
+                  alt={`${data.name} avatar`}
+                  width={80}
+                  height={80}
+                  className="rounded-full object-cover border-4 border-accent aspect-square"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-xl font-bold">
+                  {data.name[0]}
+                </div>
+              )}
+            </div>
 
-          {/* Inviter Info */}
-          <CardDescription className="text-muted-foreground mb-2">
-             <span className="font-semibold text-foreground">{data.owner.name || 'Someone'}</span>{data.owner.name ? ` ${data.owner.username}` : ''} invited you to join
-          </CardDescription>
+            <CardDescription className="text-muted-foreground mb-2">
+              <span className="font-semibold text-foreground">{data.owner.name || 'Someone'}</span>{data.owner.name ? ` ${data.owner.username}` : ''} invited you to join
+            </CardDescription>
 
-          {/* Server Name */}
-          <CardTitle className="text-2xl font-bold">{data.name}</CardTitle>
+            <CardTitle className="text-2xl font-bold">{data.name}</CardTitle>
 
-          {/* Member Counts */}
-          <div className="flex items-center text-sm text-muted-foreground mt-2">
-            <span className="flex items-center mr-3">
-              <span className="size-2 rounded-full bg-green-500 mr-1 inline-block"></span>
-              {data.members.length} Online
-            </span>
-            <span className="flex items-center">
-               <span className="size-2 rounded-full bg-gray-500 mr-1 inline-block"></span>
-              {data.members.length} Members
-            </span>
-          </div>
-        </CardHeader>
+            <div className="flex items-center text-sm text-muted-foreground mt-2">
+              <span className="flex items-center mr-3">
+                <span className="size-2 rounded-full bg-green-500 mr-1 inline-block"></span>
+                {data.members.length} Online
+              </span>
+              <span className="flex items-center">
+                <span className="size-2 rounded-full bg-gray-500 mr-1 inline-block"></span>
+                {data.members.length} Members
+              </span>
+            </div>
+          </CardHeader>
 
-        <CardFooter className="px-6 pb-6 pt-0">
-          {/* Accept Invite Button */}
-          <Button className="w-full py-6 text-lg" onClick={() => {
-            // TODO: Implement logic to accept the invite
-            console.log("Accepting invite for server:", data.id);
-            // You'll likely use a mutation here to join the server
-            handleAccept();
-          }}>
-            Accept Invite
-          </Button>
-        </CardFooter>
-      </Card>
+          <CardFooter className="px-6 pb-6 pt-0">
+  <Button
+    className="w-full py-6 text-lg relative overflow-hidden"
+    onClick={handleAccept}
+    disabled={status === "pending"} // prevent spamming
+  >
+    <motion.div
+      key={status} // animate between different statuses
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="flex items-center justify-center gap-2"
+    >
+      {status === "pending" && (
+        <>
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          Joining...
+        </>
+      )}
+      {status === "success" && (
+        <>
+          <span className="text-green-400">🎉</span> Joined!
+        </>
+      )}
+      {status === "error" && (
+        <>
+          <span className="text-red-400">⚠️</span> Error
+        </>
+      )}
+      {status === "idle" && "Accept Invite"}
+    </motion.div>
+  </Button>
+</CardFooter>
+
+        </Card>
+      </motion.div>
     </div>
   );
 };

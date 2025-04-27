@@ -80,7 +80,12 @@ export const CreateChannelForm = (
       toast.success("Channel created successfully");
       setOpen(null);
       queryClient.invalidateQueries({ queryKey:
-        [QUERY_KEYS.CATEGORIES,QUERY_KEYS.SERVER, {serverId: server?.id!}] });
+        [QUERY_KEYS.SERVER, QUERY_KEYS.CATEGORIES , {
+          serverId: server?.id,
+          userId: user?.id
+        }]
+
+      });
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to create channel");

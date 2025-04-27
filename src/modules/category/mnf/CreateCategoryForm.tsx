@@ -44,7 +44,10 @@ export const CreateCategoryForm = () => {
     onSuccess: () => {
       toast.success("Category created successfully");
       setOpen(null);
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SERVER, QUERY_KEYS.CATEGORIES , {
+        serverId: server?.id,
+        userId: user?.id
+      }]});
     },
     onError: (error: Error) => {
       toast.error(error.message || "Failed to create category");

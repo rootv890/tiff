@@ -15,16 +15,21 @@ import { ServerData } from "@/types"
 import { JSX } from "react"
 import CategoryTab from "./CategoryTab"
 import { InviteToServerModal } from "../server/InviteToServer"
+import { cn } from "@/lib/utils"
+import { useUser } from "@/hooks/useUser"
 
 
 
 // query factory
 const useServerById = (
   serverId: string,
+  userId: string
+
 ): UseQueryOptions<ServerData, Error> => {
   return {
     queryKey: [QUERY_KEYS.SERVER, QUERY_KEYS.CATEGORIES , {
-      serverId
+      serverId,
+      userId
     }],
     queryFn: async () => await fetchServerById(serverId)
   }
@@ -44,13 +49,13 @@ const CategorySidebar = ({
   serverId: string
 }): JSX.Element => {
   // fetch current serverData
-
+  const {user} = useUser()
   const {
     data,
     isLoading,
     isError,
     status
-  } = useQuery<ServerData, Error>(useServerById(serverId))
+  } = useQuery<ServerData, Error>(useServerById(serverId, user?.id!))
   if (isLoading) return <CategorySidebarSkeleton/>
 
   if (isError) return <pre>{JSON.stringify(status, null, 2)}</pre>
@@ -60,11 +65,16 @@ const CategorySidebar = ({
   )
 
   return (
-    <Sidebar variant="sidebar" collapsible="offcanvas" className="translate-x-14
-    border-border !p-0" >
+    <Sidebar
+
+    variant="sidebar" collapsible="offcanvas" className={
+      cn("border-border translate-x-14 !p-0",
+        '[data-state=collapsed]:-translate-x-20 ease-in-out',
+      )
+    }>
       <SidebarHeader >
         <ServerHeader serverData={data?.server}/>
-
+        {data?.server.id}
       </SidebarHeader>
       <SidebarContent  >
         {data!.server!.categories!.map((category) =>{

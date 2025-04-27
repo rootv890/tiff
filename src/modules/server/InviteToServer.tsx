@@ -94,7 +94,7 @@ export function InviteToServerModal() {
         </div>
         <DialogFooter className="flex !justify-center !items-center">
          {
-          !isAdmin ? ( <Button className="text-primary-foreground"  disabled={mutationStatus === "pending"} variant={'link'} onClick={ async() => {
+          isAdmin ? ( <Button className="text-primary-foreground"  disabled={mutationStatus === "pending"} variant={'link'} onClick={ async() => {
             await mutateAsync()
            }}>
              {mutationStatus === "pending" ? "Generating..." : "Generate New Invite Code"}

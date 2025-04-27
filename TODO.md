@@ -46,7 +46,7 @@ This document outlines the remaining tasks for the project.
 - [ ] Channel and System Deletion
 - [ ] Prevent deletion of system channels and categories
 - [ ] Prevent editing of system categories
-- [ ] Implement user invitation functionality
+- [x] Implement user invitation functionality
 - [ ] Implement User Button integration
 - [ ] Implement Server Settings:
     - [ ] Rename Server

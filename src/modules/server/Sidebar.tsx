@@ -39,7 +39,7 @@ const ServersSidebar = () => {
 
   return (
     <Sidebar
-      className="bg-sidebar border-r border-border w-full max-w-14"
+      className="bg-sidebar  border-r border-border w-full max-w-14"
       collapsible="none"
       side="left"
     >
