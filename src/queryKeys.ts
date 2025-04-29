@@ -16,4 +16,5 @@ export enum QUERY_KEYS {
     UPDATE_CATEGORY = "update-category",
     CREATE_CHANNEL = "create-channel",
     UPDATE_CHANNEL = "update-channel",
+    CHANNEL = "channel",
 }

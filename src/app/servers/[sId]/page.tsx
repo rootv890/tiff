@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 const page = () => {
   const { sId } = useParams();
   return (
-    <div className="">
+    <div className="h-full">
       SID page {sId}
     </div>
   )

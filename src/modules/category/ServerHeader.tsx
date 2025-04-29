@@ -9,7 +9,7 @@ import { InviteToServerModal } from "../server/InviteToServer"
 
 
 interface ServerHeaderProps {
-  serverData:ServerType  | undefined
+  serverData:ServerType
 }
 
 

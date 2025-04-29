@@ -88,6 +88,37 @@ These are potential features that are not currently prioritized but worth consid
 
 
 ## Right now todos
-1. User Role in the Server with Context Menu
-2. User Setting - Change Username, profile,status
+ User Setting - Change Username, profile,status
 3. Server Settings - Rename Server, Leave Server, Delete Server
+
+
+## TODO List
+
+- [ ] Implement search functionality (All Servers Page)
+- [ ] Implement pagination (All Servers Page)
+- [ ] Implement sorting by Name (All Servers Page)
+- [ ] Implement sorting by Last Joined (All Servers Page)
+- [ ] Implement sorting by Muted status (All Servers Page)
+- [ ] Implement sorting by Hidden status (All Servers Page)
+- [ ] Implement sorting by Last Active (All Servers Page)
+- [ ] Implement Discovery button (All Servers Page)
+- [ ] Display online and total member count (Server Card)
+- [ ] Show server join date (Server Card)
+- [ ] Implement "More" button with actions: Leave Server, Mute Server, Hide Server from sidebar (Server Card)
+- [ ] Indicate if the server is muted (Server Card)
+- [ ] Indicate if the server is hidden (Server Card)
+- [ ] Display "Last Seen" information (Server Card)
+- [ ] Channel and System Deletion (Server Functionality)
+- [ ] Prevent deletion of system channels and categories (Server Functionality)
+- [ ] Prevent editing of system categories (Server Functionality)
+- [ ] Implement User Button integration (Server Functionality)
+- [ ] Implement Server Settings: Rename Server, Leave Server, Delete Server (Server Functionality)
+- [ ] Admin and Mod only feature integration (Server Functionality)
+- [ ] Member Sidebar (Server Functionality)
+- [ ] Implement User Button Component
+    - User profile display
+    - Online/active status indicator
+    - Additional features (e.g., notifications, settings)
+- [ ] Create custom `useSign` hook with React Query integration (`src/react-queries/user.ts`)
+- [ ] User Setting - Change Username, profile,status
+- [ ] Server Settings - Rename Server, Leave Server, Delete Server

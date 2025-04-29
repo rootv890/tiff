@@ -18,6 +18,7 @@ import { InviteToServerModal } from "../server/InviteToServer"
 import { cn } from "@/lib/utils"
 import { useUser } from "@/hooks/useUser"
 import UserButton from "@/components/UserButton"
+import ServerNotFound from "@/app/servers/not-found"
 // query factory
 const useServerById = (
   serverId: string,
@@ -52,15 +53,19 @@ const CategorySidebar = ({
     data,
     isLoading,
     isError,
-    status
+    status,
+    error
   } = useQuery<ServerData, Error>(useServerById(serverId, user?.id!))
   if (isLoading) return <CategorySidebarSkeleton/>
 
-  if (isError) return <pre>{JSON.stringify(status, null, 2)}</pre>
+  if (isError || !data?.server) return <ServerNotFound/>
 
   console.log(
     "serverData", data?.server
   )
+
+  if(isLoading) return <CategorySidebarSkeleton/>
+  if (error) return <ServerNotFound/>
 
   return (
     <Sidebar
@@ -70,8 +75,7 @@ const CategorySidebar = ({
       )
     }>
       <SidebarHeader >
-        <ServerHeader serverData={data?.server}/>
-        {data?.server.id}
+        <ServerHeader serverData={data?.server!}/>
       </SidebarHeader>
       <SidebarContent  >
         {data!.server!.categories!.map((category) =>{
@@ -86,7 +90,6 @@ const CategorySidebar = ({
   )
 }
 export default CategorySidebar
-
 
 const CategorySidebarSkeleton = () => {
   return (

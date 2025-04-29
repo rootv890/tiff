@@ -1,3 +1,5 @@
+
+
 'use client'
 import {
   Sidebar,
@@ -5,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 import { GoHorizontalRule } from "react-icons/go";
@@ -15,9 +18,7 @@ import { useServer } from "@/hooks/useServer";
 
 
 
-const MemberSidebar = (
-  { serverId }: { serverId: string }
-) => {
+const MemberSidebar = () => {
 
  const [members, setMembers] = useState<MemberType[]>([])
  const [owners , setOwners] = useState<MemberType[]>([])
@@ -35,9 +36,8 @@ const MemberSidebar = (
     const serverModerators =  all.filter((member: MemberType) => member.role === "admin")
     setModerators(serverModerators)
   }, [server])
-
   return (
-      <Sidebar side="right" collapsible="offcanvas" className="border-border !p-0">
+      <Sidebar side="right" collapsible="offcanvas" className="border-border !p-0" >
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel className="flex gap-1 font-semibold text-[14px]">

@@ -62,7 +62,8 @@ export type ServerType = Omit<z.infer<typeof selectServerSchema>, "banner"> & {
 };
 export type ServerData = {
     success: boolean;
-    server: ServerType;
+    server: ServerType | null;
+    error?: string;
 };
 
 export type CategoryType = z.infer<typeof selectCategorySchema> & {
@@ -94,4 +95,10 @@ export type MemberType = {
     role: RoleType;
     user: User;
     id: string;
+};
+
+export type ChannelData = {
+    success: boolean;
+    channel: ChannelType | null;
+    error?: string;
 };
