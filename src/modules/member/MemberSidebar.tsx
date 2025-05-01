@@ -37,7 +37,9 @@ const MemberSidebar = () => {
     setModerators(serverModerators)
   }, [server])
   return (
-      <Sidebar side="right" collapsible="offcanvas" className="border-border !p-0" >
+      <Sidebar side="right" collapsible="offcanvas"
+         inert
+      className="border-border !p-0" >
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel className="flex gap-1 font-semibold text-[14px]">

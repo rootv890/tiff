@@ -77,3 +77,16 @@ export const isRecentlyJoined = (joinedAt: string) => {
     // if the diff is less than 2 days, return true
     return diff;
 };
+
+export function genrateOtp(length = 6) {
+    const digits = "0123456789";
+    const array = new Uint32Array(length);
+    crypto.getRandomValues(array);
+
+    let otp = "";
+    for (let i = 0; i < length; i++) {
+        otp += digits[array[i] % 10]; // Only digits
+    }
+
+    return otp;
+}

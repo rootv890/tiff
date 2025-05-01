@@ -1,10 +1,12 @@
 import { relations } from "drizzle-orm";
 import {
+    AnyPgColumn,
     boolean,
     integer,
     jsonb,
     pgEnum,
     pgTable,
+    primaryKey,
     text,
     timestamp,
 } from "drizzle-orm/pg-core";
@@ -370,3 +372,252 @@ export const selectServerMemberSchema = createSelectSchema(serverMembers);
 export const createMemberRoleSchema = createInsertSchema(memberRoles);
 export const updateMemberRoleSchema = createUpdateSchema(memberRoles);
 export const selectMemberRoleSchema = createSelectSchema(memberRoles);
+
+// --------------
+// Message , Attachment, Reactions, Pins and Starred Messages
+// --------------
+export const messages = pgTable("messages", {
+    id: text("id").primaryKey().notNull(),
+    channelId: text("channel_id")
+        .notNull()
+        .references(() => channels.id, {
+            onDelete: "cascade",
+        }),
+    authorId: text("author_id")
+        .notNull()
+        .references(() => user.id, {
+            onDelete: "cascade",
+        }),
+    content: text("content"),
+    replyToId: text("reply_to_id").references((): AnyPgColumn => messages.id),
+    isEdited: boolean("is_edited").default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+});
+export const attachmentsType = pgEnum("type", [
+    "image",
+    "video",
+    "audio",
+    "file",
+]);
+export const attachments = pgTable("attachments", {
+    id: text("id").primaryKey().notNull(),
+    messageId: text("message_id")
+        .notNull()
+        .references(() => messages.id, {
+            onDelete: "cascade",
+        }),
+    url: text("url").notNull(),
+    publicId: text("public_id").notNull(),
+    type: attachmentsType("type").notNull(),
+    width: integer("width"),
+    height: integer("height"),
+    format: text("format"),
+    size: integer("size"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+});
+export const messageReactions = pgTable("message_reactions", {
+    messageId: text("message_id").notNull().references(() => messages.id, {
+        onDelete: "cascade",
+    }),
+    userId: text("user_id").notNull().references(() => user.id, {
+        onDelete: "cascade",
+    }),
+    emoji: text("emoji").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+}, (table) => [
+    {
+        pk: primaryKey({
+            columns: [table.messageId, table.userId, table.emoji],
+        }),
+    },
+]);
+export const messageMentions = pgTable("message_mentions", {
+    messageId: text("message_id")
+        .notNull()
+        .references(() => messages.id, {
+            onDelete: "cascade",
+        }),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, {
+            onDelete: "cascade",
+        }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+}, (table) => [
+    {
+        pk: primaryKey({ columns: [table.messageId, table.userId] }),
+    },
+]);
+export const messageEdits = pgTable("message_edits", {
+    messageId: text("message_id")
+        .notNull()
+        .references(() => messages.id, {
+            onDelete: "cascade",
+        }),
+    editorId: text("editor_id")
+        .notNull()
+        .references(() => user.id, {
+            onDelete: "cascade",
+        }),
+    oldContent: text("old_content").notNull(),
+    newContent: text("new_content").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+}, (table) => [
+    {
+        pk: primaryKey({ columns: [table.messageId, table.editorId] }),
+    },
+]);
+export const messagePins = pgTable("message_pins", {
+    messageId: text("message_id")
+        .notNull()
+        .references(() => messages.id, {
+            onDelete: "cascade",
+        }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+}, (table) => [
+    {
+        pk: primaryKey({ columns: [table.messageId] }),
+    },
+]);
+export const messageStarred = pgTable("message_starred", {
+    messageId: text("message_id")
+        .notNull()
+        .references(() => messages.id, {
+            onDelete: "cascade",
+        }),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, {
+            onDelete: "cascade",
+        }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    deletedAt: timestamp("deleted_at"),
+}, (table) => [
+    {
+        pk: primaryKey({ columns: [table.messageId, table.userId] }),
+    },
+]);
+
+// Relations
+
+export const messageRelations = relations(messages, ({ one, many }) => ({
+    author: one(user, {
+        fields: [messages.authorId],
+        references: [user.id],
+    }),
+    channel: one(channels, {
+        fields: [messages.channelId],
+        references: [channels.id],
+    }),
+    attachments: many(attachments),
+    reactions: many(messageReactions),
+    mentions: many(messageMentions),
+    edits: many(messageEdits),
+    pins: many(messagePins),
+    starred: many(messageStarred),
+}));
+
+export const attachmentsRelations = relations(attachments, ({ one }) => ({
+    message: one(messages, {
+        fields: [attachments.messageId],
+        references: [messages.id],
+    }),
+}));
+
+export const messageReactionRelations = relations(
+    messageReactions,
+    ({ one }) => ({
+        message: one(messages, {
+            fields: [messageReactions.messageId],
+            references: [messages.id],
+        }),
+        user: one(user, {
+            fields: [messageReactions.userId],
+            references: [user.id],
+        }),
+    }),
+);
+
+export const messageMentionRelations = relations(
+    messageMentions,
+    ({ one }) => ({
+        message: one(messages, {
+            fields: [messageMentions.messageId],
+            references: [messages.id],
+        }),
+        user: one(user, {
+            fields: [messageMentions.userId],
+            references: [user.id],
+        }),
+    }),
+);
+
+export const messageEditRelations = relations(messageEdits, ({ one }) => ({
+    message: one(messages, {
+        fields: [messageEdits.messageId],
+        references: [messages.id],
+    }),
+    editor: one(user, {
+        fields: [messageEdits.editorId],
+        references: [user.id],
+    }),
+}));
+
+export const messagePinRelations = relations(messagePins, ({ one }) => ({
+    message: one(messages, {
+        fields: [messagePins.messageId],
+        references: [messages.id],
+    }),
+}));
+
+export const messageStarRelations = relations(messageStarred, ({ one }) => ({
+    message: one(messages, {
+        fields: [messageStarred.messageId],
+        references: [messages.id],
+    }),
+    user: one(user, {
+        fields: [messageStarred.userId],
+        references: [user.id],
+    }),
+}));
+
+export const createMessageSchema = createInsertSchema(messages);
+export const updateMessageSchema = createUpdateSchema(messages);
+export const selectMessageSchema = createSelectSchema(messages);
+
+export const createAttachmentsSchema = createInsertSchema(attachments);
+export const updateAttachmentsSchema = createUpdateSchema(attachments);
+export const selectAttachmentsSchema = createSelectSchema(attachments);
+
+export const createMessageEditSchema = createInsertSchema(messageEdits);
+export const updateMessageEditSchema = createUpdateSchema(messageEdits);
+export const selectMessageEditSchema = createSelectSchema(messageEdits);
+
+export const createMessageMentionSchema = createInsertSchema(messageMentions);
+export const updateMessageMentionSchema = createUpdateSchema(messageMentions);
+export const selectMessageMentionSchema = createSelectSchema(messageMentions);
+
+export const createMessageReactionSchema = createInsertSchema(messageReactions);
+export const updateMessageReactionSchema = createUpdateSchema(messageReactions);
+export const selectMessageReactionSchema = createSelectSchema(messageReactions);
+
+export const createMessagePinSchema = createInsertSchema(messagePins);
+export const updateMessagePinSchema = createUpdateSchema(messagePins);
+export const selectMessagePinSchema = createSelectSchema(messagePins);
+
+export const createMessageStarSchema = createInsertSchema(messageStarred);
+export const updateMessageStarSchema = createUpdateSchema(messageStarred);
+export const selectMessageStarSchema = createSelectSchema(messageStarred);

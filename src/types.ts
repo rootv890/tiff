@@ -67,7 +67,7 @@ export type ServerData = {
 };
 
 export type CategoryType = z.infer<typeof selectCategorySchema> & {
-    channels: CategoryChannelType[];
+    channels: ChannelType[];
 };
 
 // This extends the category channel with information from the related channel

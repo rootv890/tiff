@@ -8,6 +8,7 @@ export const env = createEnv({
         CLOUDINARY_API_KEY: z.string(),
         CLOUDINARY_API_SECRET: z.string(),
         CLOUDINARY_FOLDER_NAME: z.string(),
+        RESEND_API_KEY: z.string(),
     },
 
     /**

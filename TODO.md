@@ -15,11 +15,11 @@ This document outlines the remaining tasks for the project.
 - [ ] Add search functionality
 - [ ] Implement pagination
 - [ ] Implement sorting:
-    - [ ] By Name
-    - [ ] By Last Joined
-    - [ ] By Muted status
-    - [ ] By Hidden status
-    - [ ] By Last Active
+  - [ ] By Name
+  - [ ] By Last Joined
+  - [ ] By Muted status
+  - [ ] By Hidden status
+  - [ ] By Last Active
 - [ ] Implement Discovery button
 
 ### Server Card (`src/modules/server/ServerCard.tsx`)
@@ -29,9 +29,9 @@ This document outlines the remaining tasks for the project.
 - [ ] Display online and total member count
 - [ ] Show server join date
 - [ ] Implement "More" button with actions:
-    - [ ] Leave Server
-    - [ ] Mute Server
-    - [ ] Hide Server from sidebar
+  - [ ] Leave Server
+  - [ ] Mute Server
+  - [ ] Hide Server from sidebar
 - [ ] Indicate if the server is muted
 - [ ] Indicate if the server is hidden
 - [ ] Display "Last Seen" information
@@ -39,6 +39,7 @@ This document outlines the remaining tasks for the project.
 ### Server Functionality
 
 **Status:** In Progress
+
 - [x] Add new server creation
 - [x] Add category creation
 - [x] Add channel creation
@@ -49,11 +50,12 @@ This document outlines the remaining tasks for the project.
 - [x] Implement user invitation functionality
 - [ ] Implement User Button integration
 - [ ] Implement Server Settings:
-    - [ ] Rename Server
-    - [ ] Leave Server
-    - [ ] Delete Server
+  - [ ] Rename Server
+  - [ ] Leave Server
+  - [ ] Delete Server
 - [ ] Admin and Mod only feature integration
 - [ ] Member Sidebar
+
 ### User Button Component
 
 **Status:** To Do
@@ -70,7 +72,7 @@ Implement a comprehensive user component with:
 
 - [x] Implement toast notifications in SignUp form (`src/modules/auth/SignUpForm.tsx`)
 - [ ] Create custom `useSign` hook with React Query integration (`src/react-queries/user.ts`)
-    - **Purpose:** Improve authentication flow with efficient query management.
+  - **Purpose:** Improve authentication flow with efficient query management.
 
 ## Future Considerations (Overthinking Features)
 
@@ -85,16 +87,13 @@ These are potential features that are not currently prioritized but worth consid
 - Add new tasks following the same format under the relevant category.
 - Keep the categories clear and well-organized.
 
-
-
 ## Right now todos
- User Setting - Change Username, profile,status
-3. Server Settings - Rename Server, Leave Server, Delete Server
 
+User Setting - Change Username, profile,status 3. Server Settings - Rename Server, Leave Server, Delete Server
 
 ## TODO List
 
-- [ ] Implement search functionality (All Servers Page)
+- [x] Implement search functionality (All Servers Page)
 - [ ] Implement pagination (All Servers Page)
 - [ ] Implement sorting by Name (All Servers Page)
 - [ ] Implement sorting by Last Joined (All Servers Page)
@@ -108,17 +107,21 @@ These are potential features that are not currently prioritized but worth consid
 - [ ] Indicate if the server is muted (Server Card)
 - [ ] Indicate if the server is hidden (Server Card)
 - [ ] Display "Last Seen" information (Server Card)
-- [ ] Channel and System Deletion (Server Functionality)
+- [x] Channel and System Deletion (Server Functionality)
 - [ ] Prevent deletion of system channels and categories (Server Functionality)
 - [ ] Prevent editing of system categories (Server Functionality)
-- [ ] Implement User Button integration (Server Functionality)
+- [x] Implement User Button integration (Server Functionality)
 - [ ] Implement Server Settings: Rename Server, Leave Server, Delete Server (Server Functionality)
 - [ ] Admin and Mod only feature integration (Server Functionality)
-- [ ] Member Sidebar (Server Functionality)
+- [x] Member Sidebar (Server Functionality)
 - [ ] Implement User Button Component
-    - User profile display
-    - Online/active status indicator
-    - Additional features (e.g., notifications, settings)
+  - User profile display
+  - Online/active status indicator
+  - Additional features (e.g., notifications, settings)
 - [ ] Create custom `useSign` hook with React Query integration (`src/react-queries/user.ts`)
 - [ ] User Setting - Change Username, profile,status
 - [ ] Server Settings - Rename Server, Leave Server, Delete Server
+- [x] Search Command
+- [x] Invite Command
+- [x] Join by Invite Command
+- [ ] Message and Attachment Schema

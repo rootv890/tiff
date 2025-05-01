@@ -36,7 +36,7 @@ const UserButton = () => {
       </div>
 
       {/* Right Side: Buttons */}
-      <div className="flex items-center justify-center ">
+      <div className="flex items-center justify-end overflow-hidden ">
         <Button variant="ghost" size="icon" className="w-10 h-10 p-2 hover:bg-muted rounded-full">
           <MicOff className="size-5 text-destructive" />
         </Button>
