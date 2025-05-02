@@ -4,6 +4,7 @@ import {
     createChannelSchema,
     selectCategorySchema,
     selectChannelSchema,
+    selectMessageSchema,
     selectServerSchema,
     user,
 } from "./db/schema";
@@ -101,4 +102,8 @@ export type ChannelData = {
     success: boolean;
     channel: ChannelType | null;
     error?: string;
+};
+
+export type MessageType = z.infer<typeof selectMessageSchema> & {
+    author: User;
 };
