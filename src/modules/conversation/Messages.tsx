@@ -5,7 +5,6 @@ import Message from "./Message"
 import { useEffect, useState } from "react"
 
 const Messages = ({ channelId }: { channelId: string }) => {
-	console.log(channelId)
 	const [messages, setMessages] = useState(tempMessages)
 	useEffect(() => {
 		setMessages(tempMessages)

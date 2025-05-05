@@ -1,14 +1,17 @@
 import { MessageType } from "@/types"
+import { useMemo } from "react"
 import Profile from "./profile"
 
 const Message = ({ message }: { message: MessageType }) => {
-	const time = new Date(message.createdAt).toLocaleString("en-GB", {
-		hour: "2-digit",
-		minute: "2-digit",
-		day: "2-digit",
-		month: "2-digit",
-		year: "2-digit",
-	})
+	const time = useMemo(() => {
+		return new Date(message.createdAt).toLocaleString("en-GB", {
+			hour: "2-digit",
+			minute: "2-digit",
+			day: "2-digit",
+			month: "2-digit",
+			year: "2-digit",
+		})
+	}, [message.createdAt])
 
 	return (
 		<div className="mb-4 flex items-start justify-start  p-2 rounded-md h-auto hover:bg-active gap-3">
@@ -23,7 +26,7 @@ const Message = ({ message }: { message: MessageType }) => {
 					<p className="text-sm cursor-pointer hover:underline underline-offset-2 font-medium">
 						{message.author.name}
 					</p>
-					<p className="text-xs text-muted-foreground">{time}</p>
+					<span className="text-xs text-muted-foreground">{time}</span>
 					{/* Message content */}
 				</div>
 				<p className="text-sm break-words">{message.content}</p>

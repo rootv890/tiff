@@ -58,7 +58,7 @@ const CategorySidebar = ({ serverId }: { serverId: string }): JSX.Element => {
 
 	if (isError || !data?.server) return <ServerNotFound />
 
-	console.log("serverData", data?.server)
+	// console.log("serverData", data?.server)
 
 	if (isLoading) return <CategorySidebarSkeleton />
 	if (error) return <ServerNotFound />

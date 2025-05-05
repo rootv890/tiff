@@ -1,14 +1,4 @@
-const ChannelLayout = (
-  {
-    children,
-  }: {
-    children: React.ReactNode
-  }
-) => {
-  return (
-    <div className="h-full">
-      {children}
-    </div>
-  )
+const ChannelLayout = ({ children }: { children: React.ReactNode }) => {
+	return <div className="h-full ">{children}</div>
 }
 export default ChannelLayout

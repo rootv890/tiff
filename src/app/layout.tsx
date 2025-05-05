@@ -7,6 +7,7 @@ import { ModalProvider } from "./providers/ModalProvider"
 import { QueryProvider } from "./providers/QueryProvider"
 import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { SocketProvider } from "./providers/SocketProvider"
 
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
@@ -59,24 +60,26 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${geistMono.variable} ${ggSans.variable} antialiased`}>
 				<QueryProvider>
-					<Toaster
-						richColors
-						closeButton
-						position="top-center"
-						toastOptions={{
-							style: {
-								borderRadius: "12px",
-								border: "1px solid #5865f2",
-								padding: "10px",
-							},
-						}}
-					/>
-					<Theme appearance="dark">
-						<SidebarProvider>
-							<ModalProvider>{children}</ModalProvider>
-							<ThemePanel defaultOpen={false} />
-						</SidebarProvider>
-					</Theme>
+					<SocketProvider>
+						<Toaster
+							richColors
+							closeButton
+							position="top-center"
+							toastOptions={{
+								style: {
+									borderRadius: "12px",
+									border: "1px solid #5865f2",
+									padding: "10px",
+								},
+							}}
+						/>
+						<Theme appearance="dark">
+							<SidebarProvider>
+								<ModalProvider>{children}</ModalProvider>
+								<ThemePanel defaultOpen={false} />
+							</SidebarProvider>
+						</Theme>
+					</SocketProvider>
 				</QueryProvider>
 			</body>
 		</html>

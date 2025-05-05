@@ -36,3 +36,6 @@ export const useImageUploadMutation = (
     },
   });
 };
+
+
+// Todo useFileUploadMutation for file like pdf, docx, zip etc

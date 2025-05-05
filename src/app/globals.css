@@ -23,6 +23,7 @@
 	--color-violet: var(--color-violet);
 	--color-violet-foreground: var(--color-violet-foreground);
 	--color-input: var(--input);
+	--color-chat-input: var(--chat-input);
 	--color-card: var(--card);
 	--color-card-foreground: var(--card-foreground);
 	--color-border: var(--border);
@@ -82,6 +83,7 @@
 	/* inputs */
 
 	--input: #111214;
+	--chat-input: #131416;
 	/* states */
 	--border: #2c2d32;
 	--active: #242426;
