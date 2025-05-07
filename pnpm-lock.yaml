@@ -11,9 +11,24 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.55.0(react@19.1.0))
+      '@lexical/code':
+        specifier: ^0.31.0
+        version: 0.31.0
+      '@lexical/link':
+        specifier: ^0.31.0
+        version: 0.31.0
+      '@lexical/list':
+        specifier: ^0.31.0
+        version: 0.31.0
+      '@lexical/markdown':
+        specifier: ^0.31.0
+        version: 0.31.0
       '@lexical/react':
         specifier: ^0.31.0
         version: 0.31.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(yjs@13.6.26)
+      '@lexical/rich-text':
+        specifier: ^0.31.0
+        version: 0.31.0
       '@neondatabase/serverless':
         specifier: ^1.0.0
         version: 1.0.0

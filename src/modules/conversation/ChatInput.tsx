@@ -9,7 +9,7 @@ import { useServer } from "@/hooks/useServer"
 import { useEffect, useState } from "react"
 
 import { tempMessages } from "@/lib/data"
-import MessageEditor, { RichMessageRenderer } from "./Editor"
+import Editor from "./Editor"
 
 const ChatInput = ({ channelId }: { channelId: string }) => {
 	const { user } = useServer()
@@ -46,20 +46,10 @@ const ChatInput = ({ channelId }: { channelId: string }) => {
 			className="w-screen origin-bottom  h-screen flex flex-col items-center"
 		>
 			{/* render rich */}
-			{tempJSONState.map((message, index) => (
-				<RichMessageRenderer
-					contentJSON={message}
-					key={index}
-				/>
-			))}
+
 			{/* {JSON.stringify(tempState)} */}
 			<div className="flex items-center relative gap-2 h-13.5 origin-bottom  w-full bg-input ">
-				<MessageEditor
-					onSubmit={(data) => {
-						setTempState((prev) => [...prev, data.content_text])
-						setTempJSONState((prev) => [...prev, data.content_json])
-					}}
-				/>
+				<Editor />
 			</div>
 		</form>
 	)
