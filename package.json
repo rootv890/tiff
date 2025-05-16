@@ -19,6 +19,7 @@
 		"db:migrate": "npx drizzle-kit migrate"
 	},
 	"dependencies": {
+		"@floating-ui/react": "^0.27.8",
 		"@hookform/resolvers": "^5.0.1",
 		"@lexical/code": "^0.31.0",
 		"@lexical/link": "^0.31.0",

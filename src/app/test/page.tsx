@@ -1,9 +1,11 @@
-import ChatInput from "@/modules/conversation/ChatInput"
+import ChatEditor from "@/modules/Lexical/ChatEditor"
 
 const page = () => {
 	return (
-		<div>
-			<ChatInput channelId="" />
+		<div className="w-full  relative h-screen">
+			<div className="fixed bottom-0 left-0 w-full p-6 ">
+				<ChatEditor />
+			</div>
 		</div>
 	)
 }
