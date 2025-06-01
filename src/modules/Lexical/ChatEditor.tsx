@@ -1,74 +1,24 @@
 "use client"
 
+import LexicalProvider from "@/app/providers/LexicalProvider"
 import { cn } from "@/lib/utils"
-import { CodeNode } from "@lexical/code"
-import { LinkNode } from "@lexical/link"
-import { ListItemNode, ListNode } from "@lexical/list"
-import { $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown"
-import {
-	InitialConfigType,
-	LexicalComposer,
-} from "@lexical/react/LexicalComposer"
-import { ContentEditable } from "@lexical/react/LexicalContentEditable"
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary"
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
-import { HeadingNode, QuoteNode } from "@lexical/rich-text"
-import { $getRoot, $getSelection } from "lexical"
-import { MentionNode } from "./Mentions/MentionNode"
-import MentionPlugin from "./Mentions/MentionPlugin"
-
-const initialConfig: InitialConfigType = {
-	namespace: "chat-input",
-	onError: (e) => console.error(e),
-	nodes: [
-		MentionNode,
-		HeadingNode,
-		CodeNode,
-		ListNode,
-		ListItemNode,
-		LinkNode,
-		QuoteNode,
-	],
-	theme: {
-		paragraph: "mb-1 text-base", // Tailwind class for paragraphs
-	},
-}
+import EmojiPicker from "./EmojiPicker"
 
 const CSS: Record<string, string> = {
-	inputContainer: cn(
-		"border w-full relative border-input-border rounded-3xl focus:outline-none focus-visible:ring-0 "
-	),
-	ContentEditable: cn(
-		"p-4 active:border-input-border active:ring-0 outline-none active:outline-input-border"
-	),
-	placeholder: cn(
-		"text-muted-foreground absolute top-1/2 left-0  transform pl-4 -translate-y-1/2 pointer-events-none"
+	chatInputContainer: cn(
+		"flex items-start gap-2 w-full h-full border border-input-border rounded-3xl focus:outline-none focus-visible:ring-0 pr-4"
 	),
 } as const
 
 const ChatEditor = () => {
-	// const [editor] = useLexicalComposerContext()
 	return (
-		<LexicalComposer initialConfig={initialConfig}>
-			<div className={CSS.inputContainer}>
-				<MentionPlugin />
-				<RichTextPlugin
-					contentEditable={
-						<ContentEditable
-							className={CSS.ContentEditable}
-							aria-placeholder="Chat with @username"
-							placeholder={
-								<div className={CSS.placeholder}>Chat with @username</div>
-							}
-						/>
-					}
-					ErrorBoundary={LexicalErrorBoundary}
-				/>
-			</div>
-
-			<HistoryPlugin />
-		</LexicalComposer>
+		<div className={CSS.chatInputContainer}>
+			<LexicalProvider>
+				<div className="flex items-center gap-2 pt-3">
+					<EmojiPicker />
+				</div>
+			</LexicalProvider>
+		</div>
 	)
 }
 export default ChatEditor
