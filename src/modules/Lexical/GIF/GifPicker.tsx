@@ -9,8 +9,8 @@ import {
 	COMMAND_PRIORITY_LOW,
 } from "lexical"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-// Use GifNodePayload from GifNode.tsx for the command
 
+import { GiFClef } from "react-icons/gi"
 import { INSERT_GIF_COMMAND } from "../commands" // Adjusted path
 import { $createGifNode, GifNodePayload } from "./GifNode" // Adjusted path
 
@@ -147,19 +147,25 @@ export default function GifPicker() {
 
 	return (
 		<div className="w-fit relative">
-			<button
+			{/* <button
 				ref={buttonRef}
 				onClick={() => setShowGifPicker((prev) => !prev)}
-				className="text-sm px-2 py-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition border border-zinc-300 dark:border-zinc-600"
+				className="text-sm px-3 py-1.5 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 font-medium"
 				aria-label="Insert GIF"
 			>
 				GIF
+			</button> */}
+			<button
+				ref={buttonRef}
+				onClick={() => setShowGifPicker((prev) => !prev)}
+				className="text-sm  font-medium rounded-md  px-1 py-.5 antialiased border-2  hover:bg-secondary-foreground hover:text-secondary transition-colors duration-500 ease-out"
+			>
+				GIF
 			</button>
-
 			{showGifPicker && (
 				<div
 					ref={pickerRef}
-					className="absolute bottom-full mb-2 right-0 z-50 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 shadow-lg rounded-lg p-3 w-80 md:w-96 h-[400px] flex flex-col"
+					className="absolute bottom-full mb-2 right-0 z-50 bg-secondary dark:bg-zinc-900 border border-zinc-700 dark:border-zinc-700 shadow-xl dark:shadow-zinc-900/50 rounded-lg p-3 w-80 md:w-96 h-[400px] flex flex-col backdrop-blur-sm bg-opacity-90 dark:bg-opacity-95"
 				>
 					<input
 						ref={searchInputRef}
@@ -168,12 +174,13 @@ export default function GifPicker() {
 						// Control the input value with searchTerm, but allow "trending" to clear it for display
 						value={searchTerm === "trending" ? "" : searchTerm}
 						onChange={handleSearchInputChange}
-						className="w-full p-2 mb-3 rounded bg-zinc-100 dark:bg-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-sm"
+						className="w-full p-2.5 mb-3 rounded-lg bg-secondary dark:bg-zinc-800 border border-zinc-700 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm"
 					/>
-					<div className="flex-grow overflow-y-auto">
+					<div className="flex-grow overflow-y-auto custom-scrollbar">
 						{/* The key prop helps React differentiate Grid instances if search term changes, forcing a re-render/re-fetch */}
 						{/* However, relying on fetchGifs changing is often sufficient */}
 						<Grid
+							backgroundColor="black"
 							key={debouncedSearchTerm} // Force re-render of Grid when debounced search term changes
 							width={
 								pickerRef.current?.clientWidth ?

@@ -50,7 +50,7 @@ const initialConfig: InitialConfigType = {
 	],
 	theme: {
 		paragraph: "mb-1 text-base", // Tailwind class for paragraphs
-		gif: "my-1 flex justify-center cursor-pointer",
+		gif: "my-1 flex justify-center cursor-pointer inline-flex",
 		text: {
 			bold: "font-bold",
 			italic: "italic",

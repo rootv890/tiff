@@ -75,6 +75,7 @@ export class GifNode extends DecoratorNode<JSX.Element> {
 		const className = theme.gif || ""
 		// set the class name on the span
 		span.className = className
+
 		// return the span
 		return span
 	}
